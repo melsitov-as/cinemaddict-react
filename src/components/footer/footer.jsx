@@ -7,7 +7,7 @@ export default function Footer({ movies }) {
         </section>
         <section className='footer__statistics'>
           <p>
-            {movies.length} {`${movies.length === 1 ? 'movie' : 'movies'}`}{' '}
+            {/* {movies.length} {`${movies.length === 1 ? 'movie' : 'movies'}`}{' '} */}
             inside
           </p>
         </section>
