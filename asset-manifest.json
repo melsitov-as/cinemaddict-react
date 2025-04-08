@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/cinemaddict-react/static/css/main.5fd3ed26.css",
+    "main.js": "/cinemaddict-react/static/js/main.90607964.js",
+    "static/media/puke.png": "/cinemaddict-react/static/media/puke.1c8e3f4691c2610e0e0d.png",
+    "static/media/trophy.png": "/cinemaddict-react/static/media/trophy.f1c1d689c74257f64eb3.png",
+    "static/media/background.png": "/cinemaddict-react/static/media/background.a9000335863e4bbd6be3.png",
+    "static/media/OpenSans-ExtraBold.woff2": "/cinemaddict-react/static/media/OpenSans-ExtraBold.1666787ea3ff3941e764.woff2",
+    "static/media/OpenSans-Bold.woff2": "/cinemaddict-react/static/media/OpenSans-Bold.92425c623934facef057.woff2",
+    "static/media/OpenSans-Regular.woff2": "/cinemaddict-react/static/media/OpenSans-Regular.f57a62e9efddf6ace18b.woff2",
+    "index.html": "/cinemaddict-react/index.html",
+    "static/media/icon-favorite-active.svg": "/cinemaddict-react/static/media/icon-favorite-active.4f32b106813fb8b3af1e.svg",
+    "static/media/icon-favorite.svg": "/cinemaddict-react/static/media/icon-favorite.56d787bfb2680618cb26.svg",
+    "static/media/icon-watchlist-active.svg": "/cinemaddict-react/static/media/icon-watchlist-active.44c8eac3573bcd1778dc.svg",
+    "static/media/icon-watchlist.svg": "/cinemaddict-react/static/media/icon-watchlist.f0e14238bf91aa48077c.svg",
+    "static/media/icon-watched-active.svg": "/cinemaddict-react/static/media/icon-watched-active.a6a65a49d0946047683e.svg",
+    "static/media/icon-watched.svg": "/cinemaddict-react/static/media/icon-watched.948b19965dd63e685389.svg",
+    "main.5fd3ed26.css.map": "/cinemaddict-react/static/css/main.5fd3ed26.css.map",
+    "main.90607964.js.map": "/cinemaddict-react/static/js/main.90607964.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5fd3ed26.css",
+    "static/js/main.90607964.js"
+  ]
+}
