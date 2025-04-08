@@ -18989,7 +18989,7 @@
                   ],
                 }),
                 (0, st.jsx)('img', {
-                  src: `../images/posters/${t.image}`,
+                  src: `/images/posters/${t.image}`,
                   alt: '',
                   className: 'film-card__poster',
                   onClick: n,
@@ -19202,7 +19202,7 @@
                         children: [
                           (0, st.jsx)('img', {
                             className: 'film-details__poster-img',
-                            src: `../images/posters/${n.image}`,
+                            src: `/images/posters/${n.image}`,
                             alt: '',
                           }),
                           (0, st.jsx)('p', {
