@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cinemaddict-react/static/css/main.dc59a2e3.css",
-    "main.js": "/cinemaddict-react/static/js/main.85bbb783.js",
+    "main.js": "/cinemaddict-react/static/js/main.00b853cd.js",
     "static/media/puke.png": "/cinemaddict-react/static/media/puke.1c8e3f4691c2610e0e0d.png",
     "static/media/trophy.png": "/cinemaddict-react/static/media/trophy.f1c1d689c74257f64eb3.png",
     "static/media/background.png": "/cinemaddict-react/static/media/background.a9000335863e4bbd6be3.png",
@@ -16,10 +16,10 @@
     "static/media/icon-watched-active.svg": "/cinemaddict-react/static/media/icon-watched-active.e02d1c6f2643fd87b187.svg",
     "static/media/icon-watched.svg": "/cinemaddict-react/static/media/icon-watched.8fec48d9e487702f7805.svg",
     "main.dc59a2e3.css.map": "/cinemaddict-react/static/css/main.dc59a2e3.css.map",
-    "main.85bbb783.js.map": "/cinemaddict-react/static/js/main.85bbb783.js.map"
+    "main.00b853cd.js.map": "/cinemaddict-react/static/js/main.00b853cd.js.map"
   },
   "entrypoints": [
     "static/css/main.dc59a2e3.css",
-    "static/js/main.85bbb783.js"
+    "static/js/main.00b853cd.js"
   ]
 }
