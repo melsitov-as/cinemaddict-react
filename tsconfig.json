@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5", // Целевая версия JavaScript (например, es5, es6, es2021 и т.д.)
+    "module": "esnext", // Система модулей (например, commonjs, esnext)
+    "jsx": "react-jsx", // Как обрабатывать JSX
+    "strict": true, // Включить все строгие проверки типов
+    "esModuleInterop": true, // Разрешить взаимодействие между CommonJS и ES Modules
+    "skipLibCheck": true, // Пропускать проверку файлов объявлений (.d.ts)
+    "forceConsistentCasingInFileNames": true, // Требовать согласованность регистра в именах файлов
+    "moduleResolution": "node", // Стратегия разрешения модулей
+    "resolveJsonModule": true, // Разрешить импорт JSON файлов
+    "isolatedModules": true, // Обеспечить возможность раздельной компиляции каждого файла как модуля
+    "outDir": "./dist", // Директория для скомпилированных файлов JavaScript (опционально)
+    "rootDir": "./src", // Корневая директория с вашим исходным кодом (опционально)
+    "allowJs": true, // Разрешить компиляцию файлов JavaScript (на первом этапе миграции полезно)
+    "declaration": true, // Генерировать файлы объявлений (.d.ts) (опционально, для библиотек)
+    "sourceMap": true, // Генерировать файлы source map для отладки
+    "lib": ["dom", "esnext"] // Библиотеки, которые нужно включить (например, DOM API и последние возможности JavaScript)
+  },
+  "include": ["./src", "./types"], // Укажите папки и файлы, которые нужно компилировать
+  "exclude": ["node_modules"] // Исключите node_modules
+}

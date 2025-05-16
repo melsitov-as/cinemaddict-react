@@ -28,7 +28,7 @@ export default function FilmCard({ movie, onClick, onUpdateMovie }) {
           <span className='film-card__genre'>{movie.genre}</span>
         </p>
         <img
-          src={`./images/posters/${movie.image}`}
+          src={`/images/posters/${movie.image}`}
           alt=''
           className='film-card__poster'
           onClick={onClick}

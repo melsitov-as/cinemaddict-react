@@ -1,6 +1,23 @@
 import he from 'he';
+import React, { JSX } from 'react';
 
-export default function Comment({ comment, onDelete }) {
+type Comment = {
+  id: string;
+  emoji: string;
+  text: string;
+  author: string;
+  date: string;
+};
+
+type CommentProps = {
+  comment: Comment;
+  onDelete: (id: any) => void;
+};
+
+export default function Comment({
+  comment,
+  onDelete,
+}: CommentProps): JSX.Element {
   const handleDeleteClick = () => {
     if (onDelete) {
       onDelete(comment.id);
