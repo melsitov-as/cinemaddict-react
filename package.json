@@ -1,5 +1,6 @@
 {
   "name": "cinemaddict-react",
+  "homepage": "https://melsitov-as.github.io/cinemaddict-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
