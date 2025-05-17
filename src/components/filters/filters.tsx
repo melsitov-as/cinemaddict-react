@@ -36,7 +36,7 @@ export default function Filters({
       <nav className='main-navigation'>
         <div className='main-navigation__items'>
           <Link
-            to='cinemaddict-react'
+            to='/cinemaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'all' ? 'main-navigation__item--active' : ''
             }`}
@@ -45,7 +45,7 @@ export default function Filters({
             All movies
           </Link>
           <Link
-            to='cinemaddict-react'
+            to='/cinemaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'watchlist'
                 ? 'main-navigation__item--active'
@@ -59,7 +59,7 @@ export default function Filters({
             </span>
           </Link>
           <Link
-            to='cinemaddict-react'
+            to='/cinemaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'history'
                 ? 'main-navigation__item--active'
@@ -71,7 +71,7 @@ export default function Filters({
             <span className='main-navigation__item-count'>{historyCount}</span>
           </Link>
           <Link
-            to='cinemaddict-react'
+            to='/cinemaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'favorites'
                 ? 'main-navigation__item--active'
@@ -86,7 +86,7 @@ export default function Filters({
           </Link>
         </div>
         <Link
-          to='cinemaddict-react/stats'
+          to='/cinemaddict-react/stats'
           className={`main-navigation__additional ${
             statsActive ? 'main-navigation__additional--active' : ''
           }`}
