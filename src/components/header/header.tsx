@@ -44,7 +44,7 @@ export default function Header({ movies }: HeaderProps): JSX.Element {
   return (
     <div>
       <header className='header'>
-        <Link to='/' className='header__logo-link'>
+        <Link to='cinemaddict-react' className='header__logo-link'>
           <h1 className='header__logo logo'>Cinemaddict</h1>
         </Link>
 
