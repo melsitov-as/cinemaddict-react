@@ -1,19 +1,76 @@
+import { Dayjs } from 'dayjs';
 import { getDuration, addStatus } from '../../utils/common';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, JSX } from 'react';
 
-export default function FilmCard({ movie, onClick, onUpdateMovie }) {
-  const durationInHM = getDuration(movie.totalDuration);
-  const status = addStatus(movie);
+export type Movie = {
+  actors: string[];
+  ageRating: string[];
+  comments: Comment[];
+  commentsCount: number;
+  commentsTitle: string;
+  country: string;
+  dateWatched: Dayjs;
+  description: string;
+  director: string;
+  genre: string[];
+  genreTitle: string;
+  id: number;
+  image: string;
+  isInFavorites: boolean;
+  isInWatchlist: boolean;
+  isMostCommented: boolean;
+  isRegular: boolean;
+  isTopRated: boolean;
+  isWatched: boolean;
+  number: number;
+  originalTitle: string;
+  rating: number;
+  releaseDate: Dayjs;
+  releaseDateDMY: Dayjs;
+  screenwriters: string[];
+  shortDescription: string;
+  title: string;
+  totalDuration: number;
+  year: string;
+};
 
-  const handleAddToWatchlist = () => {
+type FilmCardProps = {
+  movie: Movie;
+  onClick: () => void;
+  onUpdateMovie: (updatedMovie: Movie) => void;
+};
+
+type Status = {
+  isInWatchlistActive: boolean;
+  isWatchedActive: boolean;
+  isInFavoritesActive: boolean;
+};
+
+export default function FilmCard({
+  movie,
+  onClick,
+  onUpdateMovie,
+}: FilmCardProps): JSX.Element {
+  console.log(movie);
+
+  const durationInHM: string = getDuration(movie.totalDuration);
+  const status: Status = addStatus(movie);
+
+  const handleAddToWatchlist: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
   };
 
-  const handleMarkAsWatched = () => {
+  const handleMarkAsWatched: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
   };
 
-  const handleMarkAsFavorite = () => {
+  const handleMarkAsFavorite: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
   };
 

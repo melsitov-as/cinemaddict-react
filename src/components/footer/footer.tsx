@@ -1,4 +1,11 @@
-export default function Footer({ movies }) {
+import { JSX } from 'react';
+import { Movie } from '../film-card/film-card';
+
+type FooterProps = {
+  movies: Movie[];
+};
+
+export default function Footer({ movies }: FooterProps): JSX.Element {
   return (
     <div>
       <footer className='footer'>
@@ -7,7 +14,7 @@ export default function Footer({ movies }) {
         </section>
         <section className='footer__statistics'>
           <p>
-            {/* {movies.length} {`${movies.length === 1 ? 'movie' : 'movies'}`}{' '} */}
+            {movies.length} {`${movies.length === 1 ? 'movie' : 'movies'}`}{' '}
             inside
           </p>
         </section>

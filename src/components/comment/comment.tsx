@@ -1,7 +1,7 @@
 import he from 'he';
 import React, { JSX } from 'react';
 
-type Comment = {
+export type Comment = {
   id: string;
   emoji: string;
   text: string;
@@ -11,14 +11,14 @@ type Comment = {
 
 type CommentProps = {
   comment: Comment;
-  onDelete: (id: any) => void;
+  onDelete: (id: string) => void;
 };
 
 export default function Comment({
   comment,
   onDelete,
 }: CommentProps): JSX.Element {
-  const handleDeleteClick = () => {
+  const handleDeleteClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (onDelete) {
       onDelete(comment.id);
     }

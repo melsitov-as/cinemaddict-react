@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, JSX } from 'react';
+import { Link, useLocation, Location } from 'react-router-dom';
+
+type FiltersProps = {
+  watchlistCount: number;
+  historyCount: number;
+  favoritesCount: number;
+  onFilterTypeChange: (type: React.SetStateAction<string>) => void;
+};
 
 export default function Filters({
   watchlistCount,
   historyCount,
   favoritesCount,
   onFilterTypeChange,
-}) {
-  const [activeFilterType, setActiveFilterType] = useState('all');
-  const handleFilterClick = (type) => {
+}: FiltersProps): JSX.Element {
+  const [activeFilterType, setActiveFilterType] = useState<string>('all');
+  const handleFilterClick = (type: React.SetStateAction<string>) => {
     setActiveFilterType(type);
     onFilterTypeChange(type);
   };
-  const [statsActive, setStatsActive] = useState(false);
-  const location = useLocation();
+  const [statsActive, setStatsActive] = useState<boolean>(false);
+  const location: Location = useLocation();
 
   useEffect(() => {
     setStatsActive(location.pathname === '/stats');
@@ -37,7 +44,6 @@ export default function Filters({
           </Link>
           <Link
             to='/'
-            href='#watchlist'
             className={`main-navigation__item ${
               activeFilterType === 'watchlist'
                 ? 'main-navigation__item--active'
@@ -52,7 +58,6 @@ export default function Filters({
           </Link>
           <Link
             to='/'
-            href='#history'
             className={`main-navigation__item ${
               activeFilterType === 'history'
                 ? 'main-navigation__item--active'
@@ -65,7 +70,6 @@ export default function Filters({
           </Link>
           <Link
             to='/'
-            href='#favorites'
             className={`main-navigation__item ${
               activeFilterType === 'favorites'
                 ? 'main-navigation__item--active'
@@ -86,7 +90,6 @@ export default function Filters({
           }`}
         >
           {' '}
-          {/* Используем Link */}
           Stats
         </Link>
       </nav>
