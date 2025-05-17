@@ -6,5 +6,6 @@
 
 ## Используемые технологии
 
-* React
-* JavaScript
+- React
+- JavaScript
+- TypeScript
