@@ -1,13 +1,22 @@
-import { ProfileRating } from '../../utils/const';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, JSX } from 'react';
 import { Link } from 'react-router-dom';
+import { MovieType } from '../film-card/film-card';
 
-export default function Header({ movies }) {
-  const [watchedMoviesCount, setWatchedMoviesCount] = useState(
+type HeaderProps = {
+  movies?: MovieType[] | null | undefined;
+};
+
+enum ProfileRating {
+  EMPTY = '',
+  NOVICE = 'novice',
+  FAN = 'fan',
+  MOVIE_BUFF = 'movie buff',
+}
+
+export default function Header({ movies }: HeaderProps): JSX.Element {
+  const [watchedMoviesCount, setWatchedMoviesCount] = useState<number>(
     movies ? movies.filter((movie) => movie.isWatched).length : 0
   );
-
-  console.log(watchedMoviesCount);
 
   useEffect(() => {
     if (movies && Array.isArray(movies)) {
@@ -19,7 +28,7 @@ export default function Header({ movies }) {
     }
   }, [movies]);
 
-  const getProfileRating = (moviesAmount) => {
+  const getProfileRating = (moviesAmount: number): ProfileRating => {
     if (moviesAmount === 0) {
       return ProfileRating.EMPTY;
     } else if (moviesAmount > 0 && moviesAmount <= 10) {
@@ -29,7 +38,7 @@ export default function Header({ movies }) {
     } else if (moviesAmount >= 21) {
       return ProfileRating.MOVIE_BUFF;
     } // Можно добавить default return на случай непредвиденных значений
-    return '';
+    return ProfileRating.EMPTY;
   };
 
   return (

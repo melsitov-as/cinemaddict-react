@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { JSX, MouseEventHandler, useState } from 'react';
 
-export default function Sort({ onSortTypeChange }) {
-  const [activeSortType, setActiveSortType] = useState('default');
+export type SortType = 'default' | 'date' | 'rating' | 'comments';
 
-  const handleSortClick = (type) => {
+type SortProps = {
+  onSortTypeChange: (type: React.SetStateAction<SortType>) => void;
+};
+
+export default function Sort({ onSortTypeChange }: SortProps): JSX.Element {
+  const [activeSortType, setActiveSortType] = useState<SortType>('default');
+
+  const handleSortClick = (type: React.SetStateAction<SortType>) => {
     setActiveSortType(type);
     onSortTypeChange(type);
   };
@@ -48,7 +53,7 @@ export default function Sort({ onSortTypeChange }) {
         <a
           href='#sort-comments'
           className={`sort__button ${
-            activeSortType === 'comment' ? 'sort__button--active' : ''
+            activeSortType === 'comments' ? 'sort__button--active' : ''
           }`}
           onClick={() => handleSortClick('comments')}
         >

@@ -1,11 +1,23 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { MovieType } from '../components/film-card/film-card';
 
-const CSS_SELECTOR_CARD_CONTROL_ACTIVE = 'film-card__controls-item--active';
-const CSS_SELECTOR_DETAILS_CONTROL_ACTIVE =
+export type CardStatus = {
+  isInWatchlistActive: string;
+  isWatchedActive: string;
+  isInFavoritesActive: string;
+};
+
+const CSS_SELECTOR_CARD_CONTROL_ACTIVE: string =
+  'film-card__controls-item--active';
+const CSS_SELECTOR_DETAILS_CONTROL_ACTIVE: string =
   'film-details__control-button--active';
 
 // Генерирует случайное дробное число
-export const getRandomPositiveFloat = (a, b, digits = 1) => {
+export const getRandomPositiveFloat = (
+  a: number,
+  b: number,
+  digits: number = 1
+): string => {
   const lower = Math.min(Math.abs(a), Math.abs(b));
   const upper = Math.max(Math.abs(a), Math.abs(b));
   const result = Math.random() * (upper - lower) + lower;
@@ -13,7 +25,7 @@ export const getRandomPositiveFloat = (a, b, digits = 1) => {
 };
 
 // Генерирует случайное целое число
-export const getRandomPositiveInteger = (a, b) => {
+export const getRandomPositiveInteger = (a: number, b: number): number => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -21,7 +33,7 @@ export const getRandomPositiveInteger = (a, b) => {
 };
 
 // Длительность фильма
-export const getDuration = (data) => {
+export const getDuration = (data: number): string => {
   if (data < 60) {
     return `${data % 60}m`;
   } else if (data === 60) {
@@ -31,34 +43,38 @@ export const getDuration = (data) => {
   }
 };
 
-export const getDurationInHandM = (data) => ({
+export const getDurationInHandM = (
+  data: number
+): { hours: number; minutes: number } => ({
   hours: Math.floor(data / 60),
   minutes: data % 60,
 });
 
-const getStringOrEmpty = (flag, value) => (flag ? value : '');
+const getStringOrEmpty = (flag: boolean, value: string): string =>
+  flag ? value : '';
 
-const getCardSelector = (flag) =>
+const getCardSelector = (flag: boolean) =>
   getStringOrEmpty(flag, CSS_SELECTOR_CARD_CONTROL_ACTIVE);
-const getDetailsSelector = (flag) =>
+const getDetailsSelector = (flag: boolean) =>
   getStringOrEmpty(flag, CSS_SELECTOR_DETAILS_CONTROL_ACTIVE);
 
-export const addStatus = (filmCardData) => ({
+export const addStatus = (filmCardData: MovieType) => ({
   isInWatchlistActive: getCardSelector(filmCardData.isInWatchlist),
   isWatchedActive: getCardSelector(filmCardData.isWatched),
   isInFavoritesActive: getCardSelector(filmCardData.isInFavorites),
 });
 
-export const addPopupStatus = (filmCardData) => ({
+export const addPopupStatus = (filmCardData: MovieType): CardStatus => ({
   isInWatchlistActive: getDetailsSelector(filmCardData.isInWatchlist),
   isWatchedActive: getDetailsSelector(filmCardData.isWatched),
   isInFavoritesActive: getDetailsSelector(filmCardData.isInFavorites),
 });
 
-export const isEscKey = (evt) => evt.key === 'Escape' || evt.key === 'esc';
+export const isEscKey = (evt: React.KeyboardEvent) =>
+  evt.key === 'Escape' || evt.key === 'esc';
 
-export const isCtrlCommandEnterKey = (evt) =>
-  (evt.ctrlKey && evt.key === 'Enter') || (evt.commandKey && evt === 'Enter');
+export const isCtrlCommandEnterKey = (evt: React.KeyboardEvent): boolean =>
+  (evt.ctrlKey && evt.key === 'Enter') || (evt.metaKey && evt.key === 'Enter');
 
 // export const updateItem = (items, update) => {
 //   const index = items.findIndex((item) => item.id === update.id);
@@ -74,15 +90,17 @@ export const isCtrlCommandEnterKey = (evt) =>
 //   ];
 // };
 
-export const sortByDate = (filmA, filmB) =>
+export const sortByDate = (filmA: MovieType, filmB: MovieType): number =>
   dayjs(filmB.releaseDate).diff(dayjs(filmA.releaseDate));
 
-export const callbackForEachLimited = (items, count, callback) => {
-  Array.from({ length: Math.min(items.length, count) }, (_, ix) =>
-    callback(items[ix])
-  );
-};
+// export const callbackForEachLimited = (items, count, callback) => {
+//   Array.from({ length: Math.min(items.length, count) }, (_, ix) =>
+//     callback(items[ix])
+//   );
+// };
 
-export const sortByRating = (a, b) => b.rating - a.rating;
+export const sortByRating = (a: MovieType, b: MovieType): number =>
+  b.rating - a.rating;
 
-export const sortByComments = (a, b) => b.commentsCount - a.commentsCount;
+export const sortByComments = (a: MovieType, b: MovieType): number =>
+  b.commentsCount - a.commentsCount;

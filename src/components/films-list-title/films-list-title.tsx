@@ -1,8 +1,8 @@
 import { JSX } from 'react';
 
 type FIlmsListTitleProps = {
-  text: string;
-  isVisible: boolean;
+  text?: string;
+  isVisible?: boolean;
 };
 
 export default function FilmsListTitle({

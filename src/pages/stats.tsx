@@ -1,43 +1,54 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Chart from 'chart.js/auto'; // Важно: импортируйте 'chart.js/auto' для регистрации всех контроллеров и плагинов
+import React, { JSX, SetStateAction, useEffect, useRef, useState } from 'react';
+import Chart, { ChartItem } from 'chart.js/auto'; // Важно: импортируйте 'chart.js/auto' для регистрации всех контроллеров и плагинов
 import { GENRES_LIST } from '../mock/film-card-mock';
-import StatsFilters from '../components/stats-filters/stats-filters';
+import StatsFilters, {
+  StatsFilterType,
+} from '../components/stats-filters/stats-filters';
 import dayjs from 'dayjs';
+import { MovieType } from '../components/film-card/film-card';
 
-export default function Stats({ movies }) {
-  const chartRef = useRef(null);
-  const [statsFilterType, setStatsFilterType] = useState('all-time'); // Default filter type
+type StatsProps = {
+  movies: MovieType[] | null | undefined;
+};
+
+export default function Stats({ movies }: StatsProps): JSX.Element {
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const [statsFilterType, setStatsFilterType] =
+    useState<StatsFilterType>('All time'); // Default filter type
   const [statsFilteredMovies, setStatsFilteredMovies] = useState(
-    movies.filter((movie) => movie.dateWatched)
+    movies?.filter((movie) => movie.dateWatched)
   );
 
-  const getEmptyGenres = () => {
-    let genresObj = GENRES_LIST.reduce((accumulator, currentValue) => {
-      accumulator[currentValue.slice(1)] = 0;
-      return accumulator;
-    }, {});
+  const getEmptyGenres = (): Record<string, number> => {
+    let genresObj = GENRES_LIST.reduce(
+      (accumulator: Record<string, number>, currentValue: string) => {
+        accumulator[currentValue.slice(1)] = 0;
+        return accumulator;
+      },
+      {}
+    );
     return genresObj;
   };
 
-  const filterByTime = (filterType) => {
+  const filterByTime = (filterType: StatsFilterType) => {
     switch (filterType) {
-      case 'today':
+      case 'Today':
         const today = dayjs().startOf('day');
         const filteredTodayMovies = movies
-          .filter((movie) => movie.isWatched)
-          .filter((movie) => {
-            const movieDateWatched = dayjs(movie.dateWatched).startOf('day');
+          ?.filter((movie: MovieType) => movie?.isWatched)
+          .filter((movie: MovieType) => {
+            const movieDateWatched = dayjs(movie?.dateWatched).startOf('day');
             return movieDateWatched.isSame(today, 'day'); // Проверяем, является ли дата просмотра сегодняшней
           });
         console.log(filteredTodayMovies);
         // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredTodayMovies);
         break;
-      case 'week':
+      case 'Week':
         const oneWeekAgo = dayjs().subtract(7, 'day').startOf('day');
         const filteredLastWeekMovies = movies
-          .filter((movie) => movie.isWatched)
-          .filter((movie) => {
+          ?.filter((movie: MovieType) => movie.isWatched)
+          .filter((movie: MovieType) => {
             const movieDateWatched = dayjs(movie.dateWatched).startOf('day');
             return movieDateWatched.isAfter(oneWeekAgo);
             // Альтернативный вариант с isBetween (включая сегодняшний день):
@@ -47,11 +58,11 @@ export default function Stats({ movies }) {
         // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredLastWeekMovies);
         break;
-      case 'month':
+      case 'Month':
         const oneMonthAgo = dayjs().subtract(30, 'day').startOf('day');
         const filteredLastMonthMovies = movies
-          .filter((movie) => movie.isWatched)
-          .filter((movie) => {
+          ?.filter((movie: MovieType) => movie.isWatched)
+          .filter((movie: MovieType) => {
             const movieDateWatched = dayjs(movie.dateWatched).startOf('day');
             return movieDateWatched.isAfter(oneMonthAgo);
             // Альтернативный вариант с isBetween (включая сегодняшний день):
@@ -61,11 +72,11 @@ export default function Stats({ movies }) {
         // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredLastMonthMovies);
         break;
-      case 'year':
+      case 'Year':
         const oneYearAgo = dayjs().subtract(365, 'day').startOf('day');
         const filteredLastYearMovies = movies
-          .filter((movie) => movie.isWatched)
-          .filter((movie) => {
+          ?.filter((movie) => movie.isWatched)
+          .filter((movie: MovieType) => {
             const movieDateWatched = dayjs(movie.dateWatched).startOf('day');
             return movieDateWatched.isAfter(oneYearAgo);
             // Альтернативный вариант с isBetween (включая сегодняшний день):
@@ -76,7 +87,7 @@ export default function Stats({ movies }) {
         setStatsFilteredMovies(filteredLastYearMovies);
         break;
       default:
-        setStatsFilteredMovies(movies.filter((movie) => movie.dateWatched));
+        setStatsFilteredMovies(movies?.filter((movie) => movie.dateWatched));
         break;
     }
   };
@@ -86,7 +97,7 @@ export default function Stats({ movies }) {
   }, [statsFilterType]);
 
   useEffect(() => {
-    const statisticCtx = chartRef.current.getContext('2d');
+    const statisticCtx = chartRef.current?.getContext('2d') as ChartItem;
 
     const renderFilmsChart = new Chart(statisticCtx, {
       type: 'bar',
@@ -164,7 +175,7 @@ export default function Stats({ movies }) {
   const initialGenreCounts = getEmptyGenres();
 
   // Усовершенствованный код подсчета жанров
-  statsFilteredMovies.forEach((movie) => {
+  statsFilteredMovies?.forEach((movie) => {
     if (movie.genre && Array.isArray(movie.genre) && movie.isWatched) {
       movie.genre.forEach((genre) => {
         const clicedGenre = genre.slice(1);
@@ -177,14 +188,14 @@ export default function Stats({ movies }) {
 
   const watched = statsFilteredMovies;
 
-  const getDurationInHandM = (data) => ({
-    hours: Math.floor(data / 60),
-    minutes: data % 60,
+  const getDurationInHandM = (data: number | undefined) => ({
+    hours: data ? Math.floor(data / 60) : 0,
+    minutes: data ? data % 60 : 0,
   });
 
-  const getTotalWatchedDuration = () => {
+  const getTotalWatchedDuration = (): number | undefined => {
     return statsFilteredMovies
-      .filter((movie) => movie.isWatched)
+      ?.filter((movie) => movie.isWatched)
       .reduce((acc, curr) => {
         return acc + curr.totalDuration;
       }, 0);
@@ -192,7 +203,7 @@ export default function Stats({ movies }) {
 
   const totalWatchedDuration = getDurationInHandM(getTotalWatchedDuration());
 
-  const handleStatsFilterTypeChange = (type) => {
+  const handleStatsFilterTypeChange = (type: StatsFilterType) => {
     setStatsFilterType(type);
   };
 
@@ -227,7 +238,7 @@ export default function Stats({ movies }) {
           <li className='statistic__text-item'>
             <h4 className='statistic__item-title'>You watched</h4>
             <p className='statistic__item-text'>
-              {watched.length}{' '}
+              {watched?.length}{' '}
               <span className='statistic__item-description'>movies</span>
             </p>
           </li>

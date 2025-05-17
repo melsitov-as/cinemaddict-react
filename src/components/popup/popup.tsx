@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+import React, { JSX, KeyboardEventHandler, useState } from 'react';
 import Comment from '../comment/comment';
-import { getDuration, addPopupStatus } from '../../utils/common';
+import { getDuration, addPopupStatus, CardStatus } from '../../utils/common';
 import he from 'he';
+import { MovieType } from '../film-card/film-card';
+
+type PopupProps = {
+  movie: MovieType;
+  onClose: () => void;
+  onUpdateMovie: (updatedMovie: MovieType) => void;
+};
+
+interface IEmojiStyles {
+  smile: React.CSSProperties;
+  sleeping: React.CSSProperties;
+  puke: React.CSSProperties;
+  angry: React.CSSProperties;
+}
 
 export default function Popup({
   movie,
   onClose,
   onUpdateMovie,
-  onChangeSelectedMovie,
-  selectedMovie,
-}) {
+}: PopupProps): JSX.Element {
   // const [movie, setMovie] = useState(initialMovie); // Добавляем состояние для movie
-  const [newCommentText, setNewCommentText] = useState('');
-  const [newCommentEmoji, setNewCommentEmoji] = useState(null); // Default emoji
-  const durationInHM = getDuration(movie.totalDuration);
-  const status = addPopupStatus(movie);
+  const [newCommentText, setNewCommentText] = useState<string>('');
+  const [newCommentEmoji, setNewCommentEmoji] = useState<string | null>(null); // Default emoji
+  const durationInHM: string = getDuration(movie.totalDuration);
+  const status: CardStatus = addPopupStatus(movie);
 
-  const emojiStyles = {
+  const emojiStyles: IEmojiStyles = {
     smile: {
       position: 'absolute',
       top: 'calc(50% - 25px)',
@@ -47,19 +59,25 @@ export default function Popup({
     },
   };
 
-  const handleAddToWatchlist = () => {
+  const handleAddToWatchlist: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
   };
 
-  const handleMarkAsWatched = () => {
+  const handleMarkAsWatched: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
   };
 
-  const handleMarkAsFavorite = () => {
+  const handleMarkAsFavorite: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
   };
 
-  const handleDeleteComment = (commentId) => {
+  const handleDeleteComment = (commentId: string) => {
     const updatedComments = movie.comments.filter(
       (comment) => comment.id !== commentId
     );
@@ -76,18 +94,18 @@ export default function Popup({
     const sanitizedCommentText = he.encode(newCommentText); // Обработка текста
 
     if (newCommentText.trim()) {
-      const newComment = {
+      const newComment: any = {
         id: Date.now(),
         author: 'Your Name', // Replace with actual author
         text: sanitizedCommentText,
         date: new Date().toLocaleDateString(),
         emoji: newCommentEmoji,
       };
-      const updatedComments = [...movie.comments, newComment];
+
       const updatedMovie = {
         ...movie,
-        comments: updatedComments,
-        commentsCount: updatedComments.length,
+        // comments: updatedComments,
+        // commentsCount: updatedComments.length,
       };
       // setMovie(updatedMovie);
       onUpdateMovie(updatedMovie);
@@ -96,10 +114,23 @@ export default function Popup({
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault(); // Предотвращаем стандартное поведение Enter (перевод строки)
       handleAddComment();
+    }
+  };
+
+  const getStyles = (newCommentEmoji: string) => {
+    switch (newCommentEmoji) {
+      case 'smile':
+        return emojiStyles.smile;
+      case 'sleeping':
+        return emojiStyles.sleeping;
+      case 'puke':
+        return emojiStyles.puke;
+      case 'angry':
+        return emojiStyles.angry;
     }
   };
 
@@ -252,7 +283,7 @@ export default function Popup({
                     width='50px'
                     height='50px'
                     alt='emoji'
-                    style={emojiStyles[newCommentEmoji]}
+                    style={getStyles(newCommentEmoji)}
                   />
                 )}
               </div>

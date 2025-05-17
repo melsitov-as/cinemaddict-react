@@ -1,15 +1,17 @@
 import { Dayjs } from 'dayjs';
-import { getDuration, addStatus } from '../../utils/common';
-import React, { useState, useEffect, JSX } from 'react';
+import { getDuration, addStatus, CardStatus } from '../../utils/common';
+import React, { JSX, MouseEventHandler } from 'react';
+import { CommentType } from '../comment/comment';
+import { Link } from 'react-router-dom';
 
-export type Movie = {
+export type MovieType = {
   actors: string[];
-  ageRating: string[];
-  comments: Comment[];
+  ageRating: string;
+  comments: CommentType[];
   commentsCount: number;
   commentsTitle: string;
   country: string;
-  dateWatched: Dayjs;
+  dateWatched: string | number | Dayjs | Date | null | undefined;
   description: string;
   director: string;
   genre: string[];
@@ -26,7 +28,7 @@ export type Movie = {
   originalTitle: string;
   rating: number;
   releaseDate: Dayjs;
-  releaseDateDMY: Dayjs;
+  releaseDateDMY: string;
   screenwriters: string[];
   shortDescription: string;
   title: string;
@@ -35,15 +37,9 @@ export type Movie = {
 };
 
 type FilmCardProps = {
-  movie: Movie;
-  onClick: () => void;
-  onUpdateMovie: (updatedMovie: Movie) => void;
-};
-
-type Status = {
-  isInWatchlistActive: boolean;
-  isWatchedActive: boolean;
-  isInFavoritesActive: boolean;
+  movie: MovieType;
+  onClick: MouseEventHandler<HTMLImageElement>;
+  onUpdateMovie: (updatedMovie: MovieType) => void;
 };
 
 export default function FilmCard({
@@ -51,10 +47,8 @@ export default function FilmCard({
   onClick,
   onUpdateMovie,
 }: FilmCardProps): JSX.Element {
-  console.log(movie);
-
   const durationInHM: string = getDuration(movie.totalDuration);
-  const status: Status = addStatus(movie);
+  const status: CardStatus = addStatus(movie);
 
   const handleAddToWatchlist: React.MouseEventHandler<
     HTMLButtonElement
@@ -76,7 +70,11 @@ export default function FilmCard({
 
   return (
     <article className='film-card'>
-      <a className='film-card__link'>
+      <Link
+        style={{ color: 'white', textDecoration: 'none' }}
+        to='#'
+        className='film-card__link'
+      >
         <h3 className='film-card__title'>{movie.title}</h3>
         <p className='film-card__rating'>{movie.rating}</p>
         <p className='film-card__info'>
@@ -95,7 +93,7 @@ export default function FilmCard({
         <span className='film-card__comments'>
           {movie.commentsCount} {movie.commentsTitle}
         </span>
-      </a>
+      </Link>
       <div className='film-card__controls'>
         <button
           className={`film-card__controls-item film-card__controls-item--add-to-watchlist ${status.isInWatchlistActive}`}

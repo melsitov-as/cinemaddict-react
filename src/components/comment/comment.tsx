@@ -1,7 +1,7 @@
 import he from 'he';
 import React, { JSX } from 'react';
 
-export type Comment = {
+export type CommentType = {
   id: string;
   emoji: string;
   text: string;
@@ -10,7 +10,7 @@ export type Comment = {
 };
 
 type CommentProps = {
-  comment: Comment;
+  comment: CommentType;
   onDelete: (id: string) => void;
 };
 

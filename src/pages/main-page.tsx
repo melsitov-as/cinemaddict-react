@@ -1,23 +1,44 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  JSX,
+  SetStateAction,
+} from 'react';
 import Footer from '../components/footer/footer';
-import FilmCard from '../components/film-card/film-card';
+import FilmCard, { MovieType } from '../components/film-card/film-card';
 import FilmsListTitle from '../components/films-list-title/films-list-title';
 import ShowMoreButton from '../components/show-more-button/show-more-button';
-import Sort from '../components/sort/sort';
+import Sort, { SortType } from '../components/sort/sort';
 import { useOutletContext } from 'react-router-dom';
 
 import '../css/main.css';
 import '../css/normalize.css';
 import Popup from '../components/popup/popup';
-
 import {
   // MOVIES_CARDS_COUNT,
   MOVIES_CARDS_COUNT_PER_STEP,
   MOVIES_TOP_RATED_COUNT,
 } from '../utils/const';
 import { sortByRating, sortByComments, sortByDate } from '../utils/common';
+import { FilterType } from '../components/filters/filters';
 
-const renderFilmCards = (movies, count, onCardClick, handleUpdateMovie) => {
+interface OutletContextType {
+  moviesCards: MovieType[];
+  sortType: SortType;
+  filterType: FilterType;
+  handleSortTypeChange: (type: SetStateAction<SortType>) => void;
+  handleUpdateMovie: (updatedMovie: MovieType) => void;
+  selectedMovie: MovieType | null;
+  setSelectedMovie: React.Dispatch<React.SetStateAction<MovieType | null>>;
+}
+
+const renderFilmCards = (
+  movies: MovieType[],
+  count: number,
+  onCardClick: (movie: MovieType) => void,
+  handleUpdateMovie: (updatedMovie: MovieType) => void
+) => {
   const slicedMovies = movies.slice(0, count);
 
   return slicedMovies.map((movie) => (
@@ -30,7 +51,20 @@ const renderFilmCards = (movies, count, onCardClick, handleUpdateMovie) => {
   ));
 };
 
-const renderTops = (movies, sortCallback, onCardClick, handleUpdateMovie) => {
+const renderTops = (
+  movies: MovieType[],
+  sortCallback: ((a: MovieType, b: MovieType) => number) | undefined,
+  onCardClick: {
+    (movie: any): void;
+    (movie: any): void;
+    (arg0: MovieType): void;
+  },
+  handleUpdateMovie: {
+    (updatedMovie: MovieType): void;
+    (updatedMovie: MovieType): void;
+    (updatedMovie: MovieType): void;
+  }
+) => {
   const sortedAndSlicedMovies = movies
     .sort(sortCallback)
     .slice(0, MOVIES_TOP_RATED_COUNT);
@@ -45,7 +79,7 @@ const renderTops = (movies, sortCallback, onCardClick, handleUpdateMovie) => {
   ));
 };
 
-export default function MainPage() {
+export default function MainPage(): JSX.Element {
   const {
     moviesCards,
     sortType,
@@ -54,7 +88,7 @@ export default function MainPage() {
     handleUpdateMovie,
     selectedMovie,
     setSelectedMovie,
-  } = useOutletContext();
+  } = useOutletContext<OutletContextType>();
 
   const [displayedMoviesCount, setDisplayedMoviesCount] = useState(
     MOVIES_CARDS_COUNT_PER_STEP
@@ -65,7 +99,7 @@ export default function MainPage() {
     setCurrentSortType(sortType);
   }, [sortType]);
 
-  const getSortedMovies = (moviesToSort) => {
+  const getSortedMovies = (moviesToSort: MovieType[]) => {
     let sortedMovies = [...moviesToSort]; // Create a copy of the movies array // Create a copy of the movies array
 
     switch (sortType) {
@@ -106,9 +140,9 @@ export default function MainPage() {
     setDisplayedMoviesCount(displayedMoviesCount + MOVIES_CARDS_COUNT_PER_STEP);
   };
 
-  const handleCardClick = (movie) => {
+  const handleCardClick = (movie: MovieType) => {
     setSelectedMovie(movie); // Устанавливаем выбранный фильм
-    document.querySelector('body').classList.add('hide-overflow');
+    document.querySelector('body')?.classList.add('hide-overflow');
   };
 
   // const handlePopupClose = () => {
@@ -118,11 +152,11 @@ export default function MainPage() {
 
   const handlePopupClose = useCallback(() => {
     setSelectedMovie(null); // Закрываем попап
-    document.querySelector('body').classList.remove('hide-overflow');
+    document.querySelector('body')?.classList.remove('hide-overflow');
   }, [setSelectedMovie /*, другие зависимости handlePopupClose */]);
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         handlePopupClose();
       }

@@ -1,21 +1,23 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
   getRandomPositiveFloat,
   getRandomPositiveInteger,
-} from '../utils/common.js';
+} from '../utils/common';
+import { CommentType } from '../components/comment/comment.js';
+import { MovieType } from '../components/film-card/film-card.js';
 
-const LAST_HANDRED_YEARS = 36500;
-const LAST_ONE_YEAR = 30;
-const MAX_COMMENT_MINUTES_GAP = 5256000;
-const MAX_ID = 10000;
-const MAX_DURATION = 240;
-const MAX_COMMENTS = 15;
-const RELEASE_DATE_FORMAT = 'DD MMMM YYYY';
-const YEAR_FORMAT = 'YYYY';
-export const COMMENTS_DATE_FORMAT = 'YYYY/MM/DD HH:mm';
+const LAST_HANDRED_YEARS: number = 36500;
+const LAST_ONE_YEAR: number = 30;
+const MAX_COMMENT_MINUTES_GAP: number = 5256000;
+const MAX_ID: number = 10000;
+const MAX_DURATION: number = 240;
+const MAX_COMMENTS: number = 15;
+const RELEASE_DATE_FORMAT: string = 'DD MMMM YYYY';
+const YEAR_FORMAT: string = 'YYYY';
+export const COMMENTS_DATE_FORMAT: string = 'YYYY/MM/DD HH:mm';
 // const ELLIPSIS = '&#8230;';
 
-const IMAGES_LIST = [
+const IMAGES_LIST: string[] = [
   'popeye-meets-sinbad.png',
   'sagebrush-trail.jpg',
   'the-dance-of-life.jpg',
@@ -25,7 +27,7 @@ const IMAGES_LIST = [
   'made-for-each-other.png',
 ];
 
-const TITLES_LIST = [
+const TITLES_LIST: string[] = [
   'Popeye the Sailor Meets Sindbad the Sailor',
   'Sagebrush Trail',
   'The Dance of Life',
@@ -35,7 +37,7 @@ const TITLES_LIST = [
   'Made for Each Other',
 ];
 
-export const GENRES_LIST = [
+export const GENRES_LIST: string[] = [
   ' Drama',
   ' Mystery',
   ' Comedy',
@@ -44,7 +46,7 @@ export const GENRES_LIST = [
   ' Musical',
 ];
 
-export const SENTENCES_LIST = [
+export const SENTENCES_LIST: string[] = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
   'Cras aliquet varius magna, non porta ligula feugiat eget. ',
   'Fusce tristique felis at fermentum pharetra. ',
@@ -58,66 +60,75 @@ export const SENTENCES_LIST = [
   'In rutrum ac purus sit amet tempus. ',
 ];
 
-const EMOJIES_LIST = ['smile', 'sleeping', 'puke', 'angry'];
+const EMOJIES_LIST: string[] = ['smile', 'sleeping', 'puke', 'angry'];
 
-const formatWithIndex = (value, index) => `${value} - ${1 + index}`;
-const makeArrayWithIndex = (count, value) =>
-  Array(count).fill(value).map(formatWithIndex);
+const formatWithIndex = (value: string, index: number): string =>
+  `${value} - ${1 + index}`;
 
-export const AUTHORS_LIST = makeArrayWithIndex(5, 'Author');
-const ORIGINAL_TITLES_LIST = makeArrayWithIndex(5, 'Original Title');
+const makeArrayWithIndex = (count: number, value: string): string[] =>
+  Array(count)
+    .fill(value)
+    .map((val, idx) => formatWithIndex(val, idx));
 
-const DIRECTORS_LIST = makeArrayWithIndex(5, 'Director');
+export const AUTHORS_LIST: string[] = makeArrayWithIndex(5, 'Author');
+const ORIGINAL_TITLES_LIST: string[] = makeArrayWithIndex(5, 'Original Title');
 
-const SCREENWRITERS_LIST = makeArrayWithIndex(3, ' Screenwriter');
+const DIRECTORS_LIST: string[] = makeArrayWithIndex(5, 'Director');
 
-const ACTORS_LIST = makeArrayWithIndex(5, ' Actor');
+const SCREENWRITERS_LIST: string[] = makeArrayWithIndex(3, ' Screenwriter');
 
-const COUNTRIES_LIST = makeArrayWithIndex(5, 'Country');
+const ACTORS_LIST: string[] = makeArrayWithIndex(5, ' Actor');
+
+const COUNTRIES_LIST: string[] = makeArrayWithIndex(5, 'Country');
 
 // Генерирует случайный элемент в массиве
-export const getRandomItem = (data) =>
+export const getRandomItem = (data: string[]): string =>
   data[getRandomPositiveInteger(0, data.length - 1)];
 
-const getRating = () => getRandomPositiveFloat(1, 10, 1);
+const getRating = (): string => getRandomPositiveFloat(1, 10, 1);
 
 // Класс Генерирует случайный массив
 
-const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+const shuffle = (array: string[]): string[] =>
+  array.sort(() => Math.random() - 0.5);
 
-const getRandomArray = (array) =>
+const getRandomArray = (array: string[]): string[] =>
   shuffle(array).slice(0, getRandomPositiveInteger(1, array.length));
 
-const getRandomNegativeYears = (interval) =>
+const getRandomNegativeYears = (interval: number): number =>
   -getRandomPositiveInteger(1, interval);
 
-const getPastDate = (interval) =>
+const getPastDate = (interval: number): Dayjs =>
   dayjs().add(getRandomNegativeYears(interval), 'day');
 
-const getReleaseDate = () => getPastDate(LAST_HANDRED_YEARS);
+const getReleaseDate = (): Dayjs => getPastDate(LAST_HANDRED_YEARS);
 
-const getGenreTitle = (data) => (data.length === 1 ? 'Genre' : 'Genres');
+const getGenreTitle = (data: string[]): string =>
+  data.length === 1 ? 'Genre' : 'Genres';
 
-const getDescription = (data) => getRandomArray(data).join(' ');
+const getDescription = (data: string[]): string =>
+  getRandomArray(data).join(' ');
 
 // const getShortDescription = (data) =>
 //   data.length > 140 ? `${data.slice(0, 138)}${ELLIPSIS};` : data;
 
-const getShortDescription = (data) =>
+const getShortDescription = (data: string): string =>
   data.length > 140 ? `${data.slice(0, 138)}${`...`}` : data;
 
-const getAgeRating = () => `${getRandomPositiveInteger(0, 18)}+`;
+const getAgeRating = (): string => `${getRandomPositiveInteger(0, 18)}+`;
 
-const getDateWatched = (data) =>
-  data === false ? false : getPastDate(LAST_ONE_YEAR);
+const getDateWatched = (
+  data: boolean
+): string | number | Dayjs | Date | null | undefined =>
+  data === false ? null : getPastDate(LAST_ONE_YEAR);
 
-const getCommentDate = () =>
+const getCommentDate = (): string =>
   dayjs()
     .add(-getRandomPositiveInteger(0, MAX_COMMENT_MINUTES_GAP), 'minutes')
     .format(COMMENTS_DATE_FORMAT);
 
-const getComment = () => ({
-  id: getRandomPositiveInteger(0, MAX_ID),
+const getComment = (): CommentType => ({
+  id: String(getRandomPositiveInteger(0, MAX_ID)),
   emoji: getRandomItem(EMOJIES_LIST),
   text: getRandomItem(SENTENCES_LIST),
   author: getRandomItem(AUTHORS_LIST),
@@ -133,9 +144,10 @@ const getCommentsMockData = () => {
   return commentsMockData;
 };
 
-const getCommentsTitle = (data) => (data === 1 ? 'comment' : 'comments');
+const getCommentsTitle = (data: number) =>
+  data === 1 ? 'comment' : 'comments';
 
-const getRandomFlag = () => Boolean(getRandomPositiveInteger(0, 1));
+const getRandomFlag = (): boolean => Boolean(getRandomPositiveInteger(0, 1));
 
 // const oldMovies = [
 //   { id: 1, name: 'Casablanca' },
@@ -155,7 +167,7 @@ const getRandomFlag = () => Boolean(getRandomPositiveInteger(0, 1));
 //   { id: 15, name: 'Vertigo' },
 // ];
 
-export const getFilmCardMockData = () => {
+export const getFilmCardMockData = (): MovieType => {
   const releaseDate = getReleaseDate();
   const genre = getRandomArray(GENRES_LIST);
   const description = getDescription(SENTENCES_LIST);

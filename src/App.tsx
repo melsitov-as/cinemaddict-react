@@ -4,8 +4,13 @@ import MainPage from './pages/main-page';
 import NotFoundPage from './pages/not-found-page';
 import Stats from './pages/stats';
 import MainLayout from './layouts/main-layout';
+import { MovieType } from './components/film-card/film-card';
 
-function App({ movies }) {
+type AppProps = {
+  movies: MovieType[] | null;
+};
+
+function App({ movies }: AppProps) {
   // return <MainPage movies={movies} />;
 
   return (

@@ -2,11 +2,13 @@ import React, { useState, useEffect, JSX } from 'react';
 import { Link, useLocation, Location } from 'react-router-dom';
 
 type FiltersProps = {
-  watchlistCount: number;
-  historyCount: number;
-  favoritesCount: number;
-  onFilterTypeChange: (type: React.SetStateAction<string>) => void;
+  watchlistCount: number | undefined;
+  historyCount: number | undefined;
+  favoritesCount: number | undefined;
+  onFilterTypeChange: (type: React.SetStateAction<FilterType>) => void;
 };
+
+export type FilterType = '' | 'all' | 'watchlist' | 'history' | 'favorites';
 
 export default function Filters({
   watchlistCount,
@@ -14,8 +16,8 @@ export default function Filters({
   favoritesCount,
   onFilterTypeChange,
 }: FiltersProps): JSX.Element {
-  const [activeFilterType, setActiveFilterType] = useState<string>('all');
-  const handleFilterClick = (type: React.SetStateAction<string>) => {
+  const [activeFilterType, setActiveFilterType] = useState<FilterType>('all');
+  const handleFilterClick = (type: React.SetStateAction<FilterType>) => {
     setActiveFilterType(type);
     onFilterTypeChange(type);
   };
