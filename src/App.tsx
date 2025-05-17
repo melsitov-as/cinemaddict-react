@@ -22,7 +22,7 @@ function App({ movies }: AppProps) {
           element={<MainLayout movies={movies} />}
         >
           <Route path='' element={<MainPage />} />
-          <Route path='/stats' element={<Stats movies={movies} />} />
+          <Route path='stats' element={<Stats movies={movies} />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>
