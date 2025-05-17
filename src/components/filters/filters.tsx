@@ -86,7 +86,7 @@ export default function Filters({
           </Link>
         </div>
         <Link
-          to='/stats'
+          to='/cinemaddict-react/stats'
           className={`main-navigation__additional ${
             statsActive ? 'main-navigation__additional--active' : ''
           }`}
