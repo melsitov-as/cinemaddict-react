@@ -17,7 +17,10 @@ function App({ movies }: AppProps) {
     <BrowserRouter>
       <Routes>
         {/* <Route path='/' element={<MainPage movies={movies} />} /> */}
-        <Route path='/' element={<MainLayout movies={movies} />}>
+        <Route
+          path='/cinemaddict-react'
+          element={<MainLayout movies={movies} />}
+        >
           <Route path='' element={<MainPage />} />
           <Route path='stats' element={<Stats movies={movies} />} />
           <Route path='*' element={<NotFoundPage />} />
