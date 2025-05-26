@@ -18,7 +18,7 @@ function App({ movies }: AppProps) {
       <Routes>
         {/* <Route path='/' element={<MainPage movies={movies} />} /> */}
         <Route
-          path='/cinemaddict-react'
+          path='/cinemaaddict-react'
           element={<MainLayout movies={movies} />}
         >
           <Route path='' element={<MainPage />} />

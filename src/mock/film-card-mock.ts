@@ -117,10 +117,8 @@ const getShortDescription = (data: string): string =>
 
 const getAgeRating = (): string => `${getRandomPositiveInteger(0, 18)}+`;
 
-const getDateWatched = (
-  data: boolean
-): string | number | Dayjs | Date | null | undefined =>
-  data === false ? null : getPastDate(LAST_ONE_YEAR);
+const getDateWatched = (data: boolean): string =>
+  data === false ? '' : getPastDate(LAST_ONE_YEAR).toISOString();
 
 const getCommentDate = (): string =>
   dayjs()
@@ -168,7 +166,7 @@ const getRandomFlag = (): boolean => Boolean(getRandomPositiveInteger(0, 1));
 // ];
 
 export const getFilmCardMockData = (): MovieType => {
-  const releaseDate = getReleaseDate();
+  const releaseDate = getReleaseDate().toISOString();
   const genre = getRandomArray(GENRES_LIST);
   const description = getDescription(SENTENCES_LIST);
   const isWatched = getRandomFlag();
@@ -184,8 +182,8 @@ export const getFilmCardMockData = (): MovieType => {
     screenwriters: getRandomArray(SCREENWRITERS_LIST),
     actors: getRandomArray(ACTORS_LIST),
     releaseDate: releaseDate,
-    releaseDateDMY: releaseDate.format(RELEASE_DATE_FORMAT),
-    year: releaseDate.format(YEAR_FORMAT),
+    releaseDateDMY: dayjs(releaseDate).format(RELEASE_DATE_FORMAT),
+    year: dayjs(releaseDate).format(YEAR_FORMAT),
     totalDuration: getRandomPositiveInteger(0, MAX_DURATION),
     country: getRandomItem(COUNTRIES_LIST),
     genre: genre,

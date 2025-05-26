@@ -22,6 +22,7 @@ import {
 } from '../utils/const';
 import { sortByRating, sortByComments, sortByDate } from '../utils/common';
 import { FilterType } from '../components/filters/filters';
+import { useAppSelector } from '../hooks';
 
 interface OutletContextType {
   moviesCards: MovieType[];
@@ -46,7 +47,7 @@ const renderFilmCards = (
       key={movie.id}
       movie={movie}
       onClick={() => onCardClick(movie)}
-      onUpdateMovie={handleUpdateMovie}
+      // onUpdateMovie={handleUpdateMovie}
     />
   ));
 };
@@ -74,14 +75,14 @@ const renderTops = (
       key={movie.id}
       movie={movie}
       onClick={() => onCardClick(movie)}
-      onUpdateMovie={handleUpdateMovie}
+      // onUpdateMovie={handleUpdateMovie}
     />
   ));
 };
 
 export default function MainPage(): JSX.Element {
   const {
-    moviesCards,
+    // moviesCards,
     sortType,
     filterType,
     handleSortTypeChange,
@@ -89,6 +90,8 @@ export default function MainPage(): JSX.Element {
     selectedMovie,
     setSelectedMovie,
   } = useOutletContext<OutletContextType>();
+
+  const moviesCards = useAppSelector((state) => state.filmCards);
 
   const [displayedMoviesCount, setDisplayedMoviesCount] = useState(
     MOVIES_CARDS_COUNT_PER_STEP
@@ -99,8 +102,8 @@ export default function MainPage(): JSX.Element {
     setCurrentSortType(sortType);
   }, [sortType]);
 
-  const getSortedMovies = (moviesToSort: MovieType[]) => {
-    let sortedMovies = [...moviesToSort]; // Create a copy of the movies array // Create a copy of the movies array
+  const getSortedMovies = (moviesToSort: MovieType[] | null | undefined) => {
+    let sortedMovies = [...(moviesToSort ?? [])]; // Create a copy of the movies array // Create a copy of the movies array
 
     switch (sortType) {
       case 'rating':
@@ -123,11 +126,11 @@ export default function MainPage(): JSX.Element {
   const getFilteredMovies = () => {
     switch (filterType) {
       case 'watchlist':
-        return moviesCards.filter((movie) => movie.isInWatchlist);
+        return moviesCards?.filter((movie) => movie.isInWatchlist);
       case 'history':
-        return moviesCards.filter((movie) => movie.isWatched);
+        return moviesCards?.filter((movie) => movie.isWatched);
       case 'favorites':
-        return moviesCards.filter((movie) => movie.isInFavorites);
+        return moviesCards?.filter((movie) => movie.isInFavorites);
       default:
         return moviesCards; // 'all' or any other case
     }

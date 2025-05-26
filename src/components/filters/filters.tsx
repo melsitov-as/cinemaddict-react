@@ -1,19 +1,14 @@
 import React, { useState, useEffect, JSX } from 'react';
 import { Link, useLocation, Location } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
 type FiltersProps = {
-  watchlistCount: number | undefined;
-  historyCount: number | undefined;
-  favoritesCount: number | undefined;
   onFilterTypeChange: (type: React.SetStateAction<FilterType>) => void;
 };
 
 export type FilterType = '' | 'all' | 'watchlist' | 'history' | 'favorites';
 
 export default function Filters({
-  watchlistCount,
-  historyCount,
-  favoritesCount,
   onFilterTypeChange,
 }: FiltersProps): JSX.Element {
   const [activeFilterType, setActiveFilterType] = useState<FilterType>('all');
@@ -21,8 +16,27 @@ export default function Filters({
     setActiveFilterType(type);
     onFilterTypeChange(type);
   };
+  const moviesCards = useAppSelector((state) => state.filmCards);
+
   const [statsActive, setStatsActive] = useState<boolean>(false);
   const location: Location = useLocation();
+
+  const getFilteredMoviesCount = (filter: string) => {
+    switch (filter) {
+      case 'watchlist':
+        return moviesCards?.filter((movie) => movie.isInWatchlist).length;
+      case 'history':
+        return moviesCards?.filter((movie) => movie.isWatched).length;
+      case 'favorites':
+        return moviesCards?.filter((movie) => movie.isInFavorites).length;
+      default:
+        return 0;
+    }
+  };
+
+  const watchlistCount = getFilteredMoviesCount('watchlist');
+  const historyCount = getFilteredMoviesCount('history');
+  const favoritesCount = getFilteredMoviesCount('favorites');
 
   useEffect(() => {
     setStatsActive(location.pathname === '/stats');

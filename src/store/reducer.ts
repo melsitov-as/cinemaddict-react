@@ -1,25 +1,41 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   toggleIsInWatchlist,
-  toggleIsInHistory,
   toggleIsInFavorites,
   setSortType,
   setFilterType,
   setStatsActive,
   setStatsFilterType,
+  selectFilmCard,
+  deleteComment,
+  toggleIsWatched,
 } from './action';
 import { getFilmCardMockData } from '../mock/film-card-mock';
 import { MOVIES_CARDS_COUNT } from '../utils/const';
+import { MovieType } from '../components/film-card/film-card';
+import { FilterType } from '../components/filters/filters';
+import { StatsFilterType } from '../components/stats-filters/stats-filters';
+import { SortType } from '../components/sort/sort';
+
+export type InitialStateType = {
+  filterType: FilterType;
+  isStatsActive: boolean;
+  statsFilterType: StatsFilterType;
+  sortType: SortType;
+  currentFilmCard: null | MovieType;
+  filmCards: null | MovieType[];
+};
 
 const getFilmCards = (count: number) => {
   return count > 0 ? Array.from({ length: count }, getFilmCardMockData) : null;
 };
 
-const initialState = {
+const initialState: InitialStateType = {
   filterType: 'all',
   isStatsActive: false,
   statsFilterType: 'All time',
   sortType: 'default',
+  currentFilmCard: null,
   filmCards: getFilmCards(MOVIES_CARDS_COUNT),
 };
 
@@ -27,7 +43,7 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(setFilterType, (state, action) => {
     const newFilterType = action.payload.filterType;
 
-    state.sortType = newFilterType;
+    state.filterType = newFilterType;
   });
   builder.addCase(setStatsActive, (state, action) => {
     const newStatsStatus = action.payload.isStatsActive;
@@ -54,13 +70,14 @@ const reducer = createReducer(initialState, (builder) => {
         );
 
         if (filmIndex !== -1) {
-          state.filmCards[filmIndex].isInFavorites =
-            !state.filmCards[filmIndex].isInFavorites;
+          state.filmCards[filmIndex].isInWatchlist =
+            !state.filmCards[filmIndex].isInWatchlist;
         }
       }
     }
+    console.log(state.filmCards?.[0].isInFavorites);
   });
-  builder.addCase(toggleIsInHistory, (state, action) => {
+  builder.addCase(toggleIsWatched, (state, action) => {
     if (action.payload && action.payload.id) {
       const targetFilmId = action.payload.id;
 
@@ -70,8 +87,8 @@ const reducer = createReducer(initialState, (builder) => {
         );
 
         if (filmIndex !== -1) {
-          state.filmCards[filmIndex].isInFavorites =
-            !state.filmCards[filmIndex].isInFavorites;
+          state.filmCards[filmIndex].isWatched =
+            !state.filmCards[filmIndex].isWatched;
         }
       }
     }
@@ -90,6 +107,18 @@ const reducer = createReducer(initialState, (builder) => {
             !state.filmCards[filmIndex].isInFavorites;
         }
       }
+    }
+  });
+  builder.addCase(selectFilmCard, (state, action) => {
+    const newFilmCard = action.payload.currentFilmCard;
+
+    state.currentFilmCard = newFilmCard;
+  });
+  builder.addCase(deleteComment, (state, action) => {
+    if (state.currentFilmCard && state.currentFilmCard.comments) {
+      state.currentFilmCard.comments = state.currentFilmCard.comments.filter(
+        (comment) => comment.id !== action.payload
+      );
     }
   });
 });

@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { MovieType } from '../film-card/film-card';
 
 type FooterProps = {
-  movies?: MovieType[];
+  movies?: MovieType[] | null | undefined;
 };
 
 export default function Footer({ movies }: FooterProps): JSX.Element {

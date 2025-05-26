@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { Provider } from 'react-redux';
 import { getFilmCardMockData } from './mock/film-card-mock';
 import { MOVIES_CARDS_COUNT } from './utils/const';
 import { MovieType } from './components/film-card/film-card';
+import { store } from './store';
 
 const movies =
   MOVIES_CARDS_COUNT > 0
@@ -16,6 +18,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App movies={movies} />
+    <Provider store={store}>
+      <App movies={movies} />
+    </Provider>
   </React.StrictMode>
 );

@@ -3,6 +3,12 @@ import { getDuration, addStatus, CardStatus } from '../../utils/common';
 import React, { JSX, MouseEventHandler } from 'react';
 import { CommentType } from '../comment/comment';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import {
+  toggleIsInFavorites,
+  toggleIsInWatchlist,
+  toggleIsWatched,
+} from '../../store/action';
 
 export type MovieType = {
   actors: string[];
@@ -11,7 +17,8 @@ export type MovieType = {
   commentsCount: number;
   commentsTitle: string;
   country: string;
-  dateWatched: string | number | Dayjs | Date | null | undefined;
+  // dateWatched: string | number | Dayjs | Date | null | undefined;
+  dateWatched: string;
   description: string;
   director: string;
   genre: string[];
@@ -27,7 +34,8 @@ export type MovieType = {
   number: number;
   originalTitle: string;
   rating: number;
-  releaseDate: Dayjs;
+  // releaseDate: Dayjs;
+  releaseDate: string;
   releaseDateDMY: string;
   screenwriters: string[];
   shortDescription: string;
@@ -39,33 +47,35 @@ export type MovieType = {
 type FilmCardProps = {
   movie: MovieType;
   onClick: MouseEventHandler<HTMLImageElement>;
-  onUpdateMovie: (updatedMovie: MovieType) => void;
+  // onUpdateMovie: (updatedMovie: MovieType) => void;
 };
 
 export default function FilmCard({
   movie,
   onClick,
-  onUpdateMovie,
-}: FilmCardProps): JSX.Element {
+}: // onUpdateMovie,
+FilmCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const durationInHM: string = getDuration(movie.totalDuration);
   const status: CardStatus = addStatus(movie);
 
   const handleAddToWatchlist: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
+    dispatch(toggleIsInWatchlist({ id: movie.id }));
   };
 
   const handleMarkAsWatched: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
+    dispatch(toggleIsWatched({ id: movie.id }));
   };
 
   const handleMarkAsFavorite: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
+    dispatch(toggleIsInFavorites({ id: movie.id }));
   };
 
   return (
@@ -83,7 +93,8 @@ export default function FilmCard({
           <span className='film-card__genre'>{movie.genre}</span>
         </p>
         <img
-          src={`/cinemaddict-react/images/posters/${movie.image}`}
+          // src={`/cinemaaddict-react/images/posters/${movie.image}`}
+          src={`/images/posters/${movie.image}`}
           alt=''
           className='film-card__poster'
           onClick={onClick}
