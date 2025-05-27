@@ -30,7 +30,7 @@ export default function Comment({
     <li className='film-details__comment'>
       <span className='film-details__comment-emoji'>
         <img
-          src={`./images/emoji/${comment.emoji}.png`}
+          src={`/cinemaaddict-react/images/emoji/${comment.emoji}.png`}
           width='55'
           height='55'
           // alt='emoji-smile'
