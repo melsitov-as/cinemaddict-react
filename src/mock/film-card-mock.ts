@@ -184,7 +184,7 @@ export const getFilmCardMockData = (): MovieType => {
     releaseDate: releaseDate,
     releaseDateDMY: dayjs(releaseDate).format(RELEASE_DATE_FORMAT),
     year: dayjs(releaseDate).format(YEAR_FORMAT),
-    totalDuration: getRandomPositiveInteger(0, MAX_DURATION),
+    totalDuration: getRandomPositiveInteger(80, MAX_DURATION),
     country: getRandomItem(COUNTRIES_LIST),
     genre: genre,
     genreTitle: getGenreTitle(genre),

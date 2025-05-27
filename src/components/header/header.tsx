@@ -1,33 +1,44 @@
 import React, { useState, useEffect, JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { MovieType } from '../film-card/film-card';
+import { useAppSelector } from '../../hooks';
 
-type HeaderProps = {
-  movies?: MovieType[] | null | undefined;
-};
+// type HeaderProps = {
+//   movies?: MovieType[] | null | undefined;
+// };
 
 enum ProfileRating {
-  EMPTY = '',
-  NOVICE = 'novice',
-  FAN = 'fan',
-  MOVIE_BUFF = 'movie buff',
+  EMPTY = `You haven't watched any movies yet.`,
+  NOVICE = 'Novice',
+  FAN = 'Fan',
+  MOVIE_BUFF = 'Movie buff',
 }
 
-export default function Header({ movies }: HeaderProps): JSX.Element {
-  const [watchedMoviesCount, setWatchedMoviesCount] = useState<number>(
-    movies ? movies.filter((movie) => movie.isWatched).length : 0
-  );
+// export default function Header({ movies }: HeaderProps): JSX.Element {
+// const [watchedMoviesCount, setWatchedMoviesCount] = useState<number>(
+//   movies ? movies.filter((movie) => movie.isWatched).length : 0
+// );
+export default function Header(): JSX.Element {
+  const movies = useAppSelector((state) => state.filmCards);
 
   useEffect(() => {
     if (movies && Array.isArray(movies)) {
       const watched = movies.filter((movie) => movie.isWatched); // Предполагаем, что у movie есть свойство isWatched
-      setWatchedMoviesCount(watched.length);
+      setWatchedMoviesCount(watched);
     } else {
-      setWatchedMoviesCount(0);
+      setWatchedMoviesCount(movies);
     }
   }, [movies]);
 
-  const getProfileRating = (moviesAmount: number): ProfileRating => {
+  const setWatchedMoviesCount = (movies: MovieType[] | null): number => {
+    if (typeof movies !== null) {
+      return movies ? movies.filter((movie) => movie.isWatched).length : 0;
+    } else {
+      return 0;
+    }
+  };
+
+  const setProfileRating = (moviesAmount: number): ProfileRating => {
     if (moviesAmount === 0) {
       return ProfileRating.EMPTY;
     } else if (moviesAmount > 0 && moviesAmount <= 10) {
@@ -43,13 +54,19 @@ export default function Header({ movies }: HeaderProps): JSX.Element {
   return (
     <div>
       <header className='header'>
-        <Link to='/cinemaddict-react' className='header__logo-link'>
-          <h1 className='header__logo logo'>Cinemaddict</h1>
+        <Link
+          to='/cinemaaddict-react'
+          className='header__logo-link'
+          style={{ cursor: 'pointer' }}
+        >
+          <h1 className='header__logo logo' style={{ cursor: 'pointer' }}>
+            Cinemaddict
+          </h1>
         </Link>
 
         <section className='header__profile profile'>
           <p className='profile__rating'>
-            {getProfileRating(watchedMoviesCount)}
+            {setProfileRating(setWatchedMoviesCount(movies))}
           </p>
           <img
             className='profile__avatar'

@@ -20,7 +20,7 @@ export default function MainLayout({}): JSX.Element {
 
   return (
     <div>
-      <Header movies={moviesCards} />
+      <Header />
       <main className='main'>
         <Filters />
 

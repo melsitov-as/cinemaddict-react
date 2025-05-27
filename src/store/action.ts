@@ -4,6 +4,7 @@ import { FilterType } from '../components/filters/filters';
 import { StatsFilterType } from '../components/stats-filters/stats-filters';
 import { MovieType } from '../components/film-card/film-card';
 import { CommentType } from '../components/comment/comment';
+import { create } from 'domain';
 
 interface ISetFilterPayload {
   filterType: FilterType;
@@ -35,6 +36,10 @@ interface IDeleteCommentPayload {
 
 interface IAddCommentPayload {
   newComment: CommentType;
+}
+
+interface ISetProfileRatingPayload {
+  status: string;
 }
 
 export const setFilterType = createAction<ISetFilterPayload>(
@@ -71,3 +76,7 @@ export const deleteComment =
   createAction<IDeleteCommentPayload>('data/deleteComment');
 
 export const addComment = createAction<IAddCommentPayload>('data/addComment');
+
+export const setProfileRating = createAction<ISetProfileRatingPayload>(
+  'data/setProfileRating'
+);

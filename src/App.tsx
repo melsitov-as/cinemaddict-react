@@ -19,7 +19,7 @@ function App({ movies }: AppProps) {
         {/* <Route path='/' element={<MainPage movies={movies} />} /> */}
         <Route path='/cinemaaddict-react' element={<MainLayout />}>
           <Route path='' element={<MainPage />} />
-          <Route path='stats' element={<Stats movies={movies} />} />
+          <Route path='stats' element={<Stats />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>

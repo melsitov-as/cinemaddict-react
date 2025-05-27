@@ -6,15 +6,15 @@ import StatsFilters, {
 } from '../components/stats-filters/stats-filters';
 import dayjs from 'dayjs';
 import { MovieType } from '../components/film-card/film-card';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { setStatsFilterType } from '../store/action';
 
-type StatsProps = {
-  movies: MovieType[] | null | undefined;
-};
+export default function Stats(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const movies = useAppSelector((state) => state.filmCards);
+  const statsFilterType = useAppSelector((state) => state.statsFilterType);
 
-export default function Stats({ movies }: StatsProps): JSX.Element {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
-  const [statsFilterType, setStatsFilterType] =
-    useState<StatsFilterType>('All time'); // Default filter type
   const [statsFilteredMovies, setStatsFilteredMovies] = useState(
     movies?.filter((movie) => movie.dateWatched)
   );
@@ -55,7 +55,6 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
             // const today = dayjs().endOf('day');
             // return movieDateWatched.isBetween(oneMonthAgo, today, null, '[]');
           });
-        // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredLastWeekMovies);
         break;
       case 'Month':
@@ -69,7 +68,6 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
             // const today = dayjs().endOf('day');
             // return movieDateWatched.isBetween(oneMonthAgo, today, null, '[]');
           });
-        // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredLastMonthMovies);
         break;
       case 'Year':
@@ -83,7 +81,6 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
             // const today = dayjs().endOf('day');
             // return movieDateWatched.isBetween(oneMonthAgo, today, null, '[]');
           });
-        // Возможно, здесь вы захотите обновить состояние:
         setStatsFilteredMovies(filteredLastYearMovies);
         break;
       default:
@@ -127,24 +124,24 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'white', // Измените 'blue' на желаемый цвет
+              color: 'white',
               font: {
                 size: 14, // Дополнительно можно изменить размер шрифта
               },
               // Другие настройки ticks
             },
             title: {
-              // Настройка заголовка оси Y (если нужен)
+              // Настройка заголовка оси Y
               display: true,
               text: 'Movies',
-              color: 'white', // Измените 'green' на желаемый цвет заголовка
+              color: 'white',
               font: {
                 size: 16,
               },
             },
           },
           x: {
-            // Пример настройки цвета текста меток оси X (если есть)
+            // Hастройка цвета текста меток оси X (если есть)
             ticks: {
               color: 'white',
             },
@@ -204,7 +201,7 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
   const totalWatchedDuration = getDurationInHandM(getTotalWatchedDuration());
 
   const handleStatsFilterTypeChange = (type: StatsFilterType) => {
-    setStatsFilterType(type);
+    dispatch(setStatsFilterType({ statsFilterType: type }));
   };
 
   const topGenre = (function (obj) {
@@ -221,7 +218,7 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
           Your rank
           <img
             className='statistic__img'
-            src='/images/bitmap@2x.png'
+            src='/cinemaaddict-react/images/bitmap@2x.png'
             alt='Avatar'
             width='35'
             height='35'

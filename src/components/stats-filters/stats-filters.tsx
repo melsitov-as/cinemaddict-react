@@ -54,7 +54,7 @@ export default function StatsFilters({
         name='statistic-filter'
         id='statistic-all-time'
         value='all-time'
-        checked={statsFilterType === 'all-time'}
+        checked={statsFilterType === 'All time' ? true : false}
         onChange={handleInputChange}
       />
       <label htmlFor='statistic-all-time' className='statistic__filters-label'>
@@ -67,7 +67,7 @@ export default function StatsFilters({
         name='statistic-filter'
         id='statistic-today'
         value='today'
-        checked={statsFilterType === 'today'}
+        checked={statsFilterType === 'Today' ? true : false}
         onChange={handleInputChange}
       />
       <label htmlFor='statistic-today' className='statistic__filters-label'>
@@ -80,6 +80,7 @@ export default function StatsFilters({
         name='statistic-filter'
         id='statistic-week'
         value='week'
+        checked={statsFilterType === 'Week' ? true : false}
         onChange={handleInputChange}
       />
       <label htmlFor='statistic-week' className='statistic__filters-label'>
@@ -91,6 +92,7 @@ export default function StatsFilters({
         className='statistic__filters-input visually-hidden'
         name='statistic-filter'
         id='statistic-month'
+        checked={statsFilterType === 'Month' ? true : false}
         value='month'
         onChange={handleInputChange}
       />
@@ -103,6 +105,7 @@ export default function StatsFilters({
         className='statistic__filters-input visually-hidden'
         name='statistic-filter'
         id='statistic-year'
+        checked={statsFilterType === 'Year' ? true : false}
         value='year'
         onChange={handleInputChange}
       />

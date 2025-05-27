@@ -10,6 +10,7 @@ import {
   deleteComment,
   toggleIsWatched,
   addComment,
+  setProfileRating,
 } from './action';
 import { getFilmCardMockData } from '../mock/film-card-mock';
 import { MOVIES_CARDS_COUNT } from '../utils/const';
@@ -178,7 +179,7 @@ const reducer = createReducer(initialState, (builder) => {
         state.currentFilmCard.comments = [];
       }
       state.currentFilmCard.comments.push(commentToAdd);
-      if (typeof state.currentFilmCard.commentsCount === 'number') {
+      if (typeof state.currentFilmCard.commentsCount !== 'undefined') {
         state.currentFilmCard.commentsCount += 1;
       } else {
         state.currentFilmCard.commentsCount = 1;
