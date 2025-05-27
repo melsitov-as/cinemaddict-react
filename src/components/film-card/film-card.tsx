@@ -94,7 +94,7 @@ FilmCardProps): JSX.Element {
         </p>
         <img
           // src={`/cinemaaddict-react/images/posters/${movie.image}`}
-          src={`/images/posters/${movie.image}`}
+          src={`/cinemaaddict-react/images/posters/${movie.image}`}
           alt=''
           className='film-card__poster'
           onClick={onClick}

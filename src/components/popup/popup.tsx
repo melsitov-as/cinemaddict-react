@@ -168,7 +168,7 @@ export default function Popup({
             <div className='film-details__poster'>
               <img
                 className='film-details__poster-img'
-                src={`/images/posters/${movie?.image}`}
+                src={`/cinemaaddict-react/images/posters/${movie?.image}`}
                 alt=''
               />
 
