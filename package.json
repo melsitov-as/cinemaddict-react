@@ -1,7 +1,7 @@
 {
   "name": "cinemaddict-react",
   "version": "0.1.0",
-  "homepage": "https://melsitov-as.github.io/cinemaddict-react",
+  "homepage": "https://melsitov-as.github.io/cinemaaddict-react",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
