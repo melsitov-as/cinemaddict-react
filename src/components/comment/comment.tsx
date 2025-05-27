@@ -1,5 +1,7 @@
 import he from 'he';
 import React, { JSX } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteComment } from '../../store/action';
 
 export type CommentType = {
   id: string;
@@ -18,10 +20,10 @@ export default function Comment({
   comment,
   onDelete,
 }: CommentProps): JSX.Element {
+  const dispatch = useDispatch();
+
   const handleDeleteClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-    if (onDelete) {
-      onDelete(comment.id);
-    }
+    dispatch(deleteComment({ id: comment.id }));
   };
 
   return (
@@ -43,6 +45,7 @@ export default function Comment({
           <button
             className='film-details__comment-delete'
             onClick={handleDeleteClick}
+            type='button'
           >
             Delete
           </button>

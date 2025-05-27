@@ -9,6 +9,7 @@ import {
   selectFilmCard,
   deleteComment,
   toggleIsWatched,
+  addComment,
 } from './action';
 import { getFilmCardMockData } from '../mock/film-card-mock';
 import { MOVIES_CARDS_COUNT } from '../utils/const';
@@ -22,7 +23,7 @@ export type InitialStateType = {
   isStatsActive: boolean;
   statsFilterType: StatsFilterType;
   sortType: SortType;
-  currentFilmCard: null | MovieType;
+  currentFilmCard: undefined | MovieType;
   filmCards: null | MovieType[];
 };
 
@@ -35,7 +36,7 @@ const initialState: InitialStateType = {
   isStatsActive: false,
   statsFilterType: 'All time',
   sortType: 'default',
-  currentFilmCard: null,
+  currentFilmCard: undefined,
   filmCards: getFilmCards(MOVIES_CARDS_COUNT),
 };
 
@@ -75,7 +76,14 @@ const reducer = createReducer(initialState, (builder) => {
         }
       }
     }
-    console.log(state.filmCards?.[0].isInFavorites);
+
+    if (
+      state.currentFilmCard &&
+      state.currentFilmCard.id === action.payload.id
+    ) {
+      state.currentFilmCard.isInWatchlist =
+        !state.currentFilmCard.isInWatchlist;
+    }
   });
   builder.addCase(toggleIsWatched, (state, action) => {
     if (action.payload && action.payload.id) {
@@ -91,6 +99,13 @@ const reducer = createReducer(initialState, (builder) => {
             !state.filmCards[filmIndex].isWatched;
         }
       }
+    }
+
+    if (
+      state.currentFilmCard &&
+      state.currentFilmCard.id === action.payload.id
+    ) {
+      state.currentFilmCard.isWatched = !state.currentFilmCard.isWatched;
     }
   });
   builder.addCase(toggleIsInFavorites, (state, action) => {
@@ -108,6 +123,14 @@ const reducer = createReducer(initialState, (builder) => {
         }
       }
     }
+
+    if (
+      state.currentFilmCard &&
+      state.currentFilmCard.id === action.payload.id
+    ) {
+      state.currentFilmCard.isInFavorites =
+        !state.currentFilmCard.isInFavorites;
+    }
   });
   builder.addCase(selectFilmCard, (state, action) => {
     const newFilmCard = action.payload.currentFilmCard;
@@ -115,10 +138,78 @@ const reducer = createReducer(initialState, (builder) => {
     state.currentFilmCard = newFilmCard;
   });
   builder.addCase(deleteComment, (state, action) => {
+    const commentIdToDelete = action.payload?.id;
+
     if (state.currentFilmCard && state.currentFilmCard.comments) {
       state.currentFilmCard.comments = state.currentFilmCard.comments.filter(
-        (comment) => comment.id !== action.payload
+        (comment) => comment.id !== commentIdToDelete
       );
+      if (typeof state.currentFilmCard.commentsCount !== 'undefined') {
+        state.currentFilmCard.commentsCount -= 1;
+      }
+    }
+    if (state.filmCards) {
+      const filmIndex = state.filmCards.findIndex(
+        (filmCard) =>
+          filmCard.comments &&
+          filmCard.comments.some((comment) => comment.id === commentIdToDelete)
+      );
+
+      if (filmIndex !== -1) {
+        const filmCardToUpdate = state.filmCards[filmIndex];
+
+        if (filmCardToUpdate) {
+          if (typeof filmCardToUpdate.commentsCount !== 'undefined') {
+            filmCardToUpdate.commentsCount -= 1;
+          }
+          if (filmCardToUpdate.comments) {
+            filmCardToUpdate.comments = filmCardToUpdate.comments.filter(
+              (comment) => comment.id !== commentIdToDelete
+            );
+          }
+        }
+      }
+    }
+  });
+  builder.addCase(addComment, (state, action) => {
+    const commentToAdd = action.payload?.newComment;
+    if (state.currentFilmCard) {
+      if (!state.currentFilmCard.comments) {
+        state.currentFilmCard.comments = [];
+      }
+      state.currentFilmCard.comments.push(commentToAdd);
+      if (typeof state.currentFilmCard.commentsCount === 'number') {
+        state.currentFilmCard.commentsCount += 1;
+      } else {
+        state.currentFilmCard.commentsCount = 1;
+      }
+    }
+    const targetFilmId = state.currentFilmCard?.id;
+    if (
+      state.filmCards &&
+      targetFilmId !== undefined &&
+      targetFilmId !== null
+    ) {
+      const filmIndex = state.filmCards.findIndex(
+        (filmCard) => filmCard.id === targetFilmId
+      );
+
+      if (filmIndex !== -1) {
+        const filmCardInList = state.filmCards[filmIndex];
+
+        if (filmCardInList) {
+          if (!filmCardInList.comments) {
+            filmCardInList.comments = [];
+          }
+          filmCardInList.comments.push(commentToAdd);
+
+          if (typeof filmCardInList.commentsCount !== 'undefined') {
+            filmCardInList.commentsCount += 1;
+          } else {
+            filmCardInList.commentsCount = 1;
+          }
+        }
+      }
     }
   });
 });

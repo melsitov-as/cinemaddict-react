@@ -197,7 +197,7 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
     return statsFilteredMovies
       ?.filter((movie) => movie.isWatched)
       .reduce((acc, curr) => {
-        return acc + curr.totalDuration;
+        return curr.totalDuration ? acc + curr.totalDuration : 0;
       }, 0);
   };
 
@@ -221,7 +221,7 @@ export default function Stats({ movies }: StatsProps): JSX.Element {
           Your rank
           <img
             className='statistic__img'
-            src='images/bitmap@2x.png'
+            src='/images/bitmap@2x.png'
             alt='Avatar'
             width='35'
             height='35'

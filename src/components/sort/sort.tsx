@@ -1,17 +1,15 @@
-import { JSX, MouseEventHandler, useState } from 'react';
+import { JSX } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setSortType } from '../../store/action';
 
 export type SortType = 'default' | 'date' | 'rating' | 'comments';
 
-type SortProps = {
-  onSortTypeChange: (type: React.SetStateAction<SortType>) => void;
-};
+export default function Sort(): JSX.Element {
+  const activeSortType = useAppSelector((state) => state.sortType);
+  const dispatch = useAppDispatch();
 
-export default function Sort({ onSortTypeChange }: SortProps): JSX.Element {
-  const [activeSortType, setActiveSortType] = useState<SortType>('default');
-
-  const handleSortClick = (type: React.SetStateAction<SortType>) => {
-    setActiveSortType(type);
-    onSortTypeChange(type);
+  const handleSortClick = (type: SortType) => {
+    dispatch(setSortType({ sortType: type }));
   };
 
   return (

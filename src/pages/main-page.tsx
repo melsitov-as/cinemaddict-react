@@ -22,16 +22,16 @@ import {
 } from '../utils/const';
 import { sortByRating, sortByComments, sortByDate } from '../utils/common';
 import { FilterType } from '../components/filters/filters';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { selectFilmCard } from '../store/action';
 
 interface OutletContextType {
   moviesCards: MovieType[];
   sortType: SortType;
-  filterType: FilterType;
-  handleSortTypeChange: (type: SetStateAction<SortType>) => void;
+  activeFilterType: FilterType;
   handleUpdateMovie: (updatedMovie: MovieType) => void;
-  selectedMovie: MovieType | null;
-  setSelectedMovie: React.Dispatch<React.SetStateAction<MovieType | null>>;
+  // selectedMovie: MovieType | null;
+  // setSelectedMovie: React.Dispatch<React.SetStateAction<MovieType | null>>;
 }
 
 const renderFilmCards = (
@@ -43,12 +43,7 @@ const renderFilmCards = (
   const slicedMovies = movies.slice(0, count);
 
   return slicedMovies.map((movie) => (
-    <FilmCard
-      key={movie.id}
-      movie={movie}
-      onClick={() => onCardClick(movie)}
-      // onUpdateMovie={handleUpdateMovie}
-    />
+    <FilmCard key={movie.id} movie={movie} onClick={() => onCardClick(movie)} />
   ));
 };
 
@@ -71,27 +66,23 @@ const renderTops = (
     .slice(0, MOVIES_TOP_RATED_COUNT);
 
   return sortedAndSlicedMovies.map((movie) => (
-    <FilmCard
-      key={movie.id}
-      movie={movie}
-      onClick={() => onCardClick(movie)}
-      // onUpdateMovie={handleUpdateMovie}
-    />
+    <FilmCard key={movie.id} movie={movie} onClick={() => onCardClick(movie)} />
   ));
 };
 
 export default function MainPage(): JSX.Element {
   const {
-    // moviesCards,
-    sortType,
-    filterType,
-    handleSortTypeChange,
+    activeFilterType,
     handleUpdateMovie,
-    selectedMovie,
-    setSelectedMovie,
+    // selectedMovie,
+    // setSelectedMovie,
   } = useOutletContext<OutletContextType>();
 
+  const dispatch = useAppDispatch();
+
   const moviesCards = useAppSelector((state) => state.filmCards);
+  const sortType = useAppSelector((state) => state.sortType);
+  const selectedMovie = useAppSelector((state) => state.currentFilmCard);
 
   const [displayedMoviesCount, setDisplayedMoviesCount] = useState(
     MOVIES_CARDS_COUNT_PER_STEP
@@ -124,7 +115,7 @@ export default function MainPage(): JSX.Element {
   };
 
   const getFilteredMovies = () => {
-    switch (filterType) {
+    switch (activeFilterType) {
       case 'watchlist':
         return moviesCards?.filter((movie) => movie.isInWatchlist);
       case 'history':
@@ -144,19 +135,16 @@ export default function MainPage(): JSX.Element {
   };
 
   const handleCardClick = (movie: MovieType) => {
-    setSelectedMovie(movie); // Устанавливаем выбранный фильм
+    // setSelectedMovie(movie); // Устанавливаем выбранный фильм
+    dispatch(selectFilmCard({ currentFilmCard: movie }));
     document.querySelector('body')?.classList.add('hide-overflow');
   };
 
-  // const handlePopupClose = () => {
-  //   setSelectedMovie(null); // Закрываем попап
-  //   document.querySelector('body').classList.remove('hide-overflow');
-  // };
-
   const handlePopupClose = useCallback(() => {
-    setSelectedMovie(null); // Закрываем попап
+    // setSelectedMovie(null); // Закрываем попап
+    dispatch(selectFilmCard({ currentFilmCard: undefined }));
     document.querySelector('body')?.classList.remove('hide-overflow');
-  }, [setSelectedMovie /*, другие зависимости handlePopupClose */]);
+  }, [selectedMovie /*, другие зависимости handlePopupClose */]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -175,7 +163,7 @@ export default function MainPage(): JSX.Element {
   }, [selectedMovie, handlePopupClose]);
   return (
     <>
-      <Sort onSortTypeChange={handleSortTypeChange} />
+      <Sort />
       <section className='films'>
         <section className='films-list'>
           {sortedAndFilteredMovies ? (
@@ -240,7 +228,7 @@ export default function MainPage(): JSX.Element {
       <Footer movies={moviesCards} />
       {selectedMovie && (
         <Popup
-          movie={selectedMovie}
+          // movie={selectedMovie}
           onClose={handlePopupClose}
           onUpdateMovie={handleUpdateMovie}
         />

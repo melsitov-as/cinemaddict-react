@@ -1,22 +1,17 @@
 import React, { useState, useEffect, JSX } from 'react';
 import { Link, useLocation, Location } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-
-type FiltersProps = {
-  onFilterTypeChange: (type: React.SetStateAction<FilterType>) => void;
-};
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setFilterType } from '../../store/action';
 
 export type FilterType = '' | 'all' | 'watchlist' | 'history' | 'favorites';
 
-export default function Filters({
-  onFilterTypeChange,
-}: FiltersProps): JSX.Element {
-  const [activeFilterType, setActiveFilterType] = useState<FilterType>('all');
-  const handleFilterClick = (type: React.SetStateAction<FilterType>) => {
-    setActiveFilterType(type);
-    onFilterTypeChange(type);
+export default function Filters(): JSX.Element {
+  const handleFilterClick = (type: FilterType) => {
+    dispatch(setFilterType({ filterType: type }));
   };
   const moviesCards = useAppSelector((state) => state.filmCards);
+  const activeFilterType = useAppSelector((state) => state.filterType);
+  const dispatch = useAppDispatch();
 
   const [statsActive, setStatsActive] = useState<boolean>(false);
   const location: Location = useLocation();
@@ -41,7 +36,7 @@ export default function Filters({
   useEffect(() => {
     setStatsActive(location.pathname === '/stats');
     if (location.pathname === '/stats') {
-      setActiveFilterType('');
+      dispatch(setFilterType({ filterType: '' }));
     }
   }, [location.pathname]); // Зависимость от location.pathname
 
@@ -50,7 +45,7 @@ export default function Filters({
       <nav className='main-navigation'>
         <div className='main-navigation__items'>
           <Link
-            to='/cinemaddict-react'
+            to='/cinemaaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'all' ? 'main-navigation__item--active' : ''
             }`}
@@ -59,7 +54,7 @@ export default function Filters({
             All movies
           </Link>
           <Link
-            to='/cinemaddict-react'
+            to='/cinemaaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'watchlist'
                 ? 'main-navigation__item--active'
@@ -73,7 +68,7 @@ export default function Filters({
             </span>
           </Link>
           <Link
-            to='/cinemaddict-react'
+            to='/cinemaaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'history'
                 ? 'main-navigation__item--active'
@@ -85,7 +80,7 @@ export default function Filters({
             <span className='main-navigation__item-count'>{historyCount}</span>
           </Link>
           <Link
-            to='/cinemaddict-react'
+            to='/cinemaaddict-react'
             className={`main-navigation__item ${
               activeFilterType === 'favorites'
                 ? 'main-navigation__item--active'
@@ -100,7 +95,7 @@ export default function Filters({
           </Link>
         </div>
         <Link
-          to='/cinemaddict-react/stats'
+          to='/cinemaaddict-react/stats'
           className={`main-navigation__additional ${
             statsActive ? 'main-navigation__additional--active' : ''
           }`}

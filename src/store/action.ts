@@ -18,7 +18,7 @@ interface ISetSortPayload {
 }
 
 interface IToggleFilmDataPayload {
-  id: number;
+  id: number | undefined;
 }
 
 interface ISetStatsFilterPayload {
@@ -26,7 +26,15 @@ interface ISetStatsFilterPayload {
 }
 
 interface ICurrentFilmCardPayload {
-  currentFilmCard: null | MovieType;
+  currentFilmCard: undefined | MovieType;
+}
+
+interface IDeleteCommentPayload {
+  id: string;
+}
+
+interface IAddCommentPayload {
+  newComment: CommentType;
 }
 
 export const setFilterType = createAction<ISetFilterPayload>(
@@ -59,4 +67,7 @@ export const selectFilmCard = createAction<ICurrentFilmCardPayload>(
   'data/selectFilmCard'
 );
 
-export const deleteComment = createAction<string>('data/deleteComment');
+export const deleteComment =
+  createAction<IDeleteCommentPayload>('data/deleteComment');
+
+export const addComment = createAction<IAddCommentPayload>('data/addComment');

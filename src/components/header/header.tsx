@@ -22,7 +22,6 @@ export default function Header({ movies }: HeaderProps): JSX.Element {
     if (movies && Array.isArray(movies)) {
       const watched = movies.filter((movie) => movie.isWatched); // Предполагаем, что у movie есть свойство isWatched
       setWatchedMoviesCount(watched.length);
-      console.log(watchedMoviesCount);
     } else {
       setWatchedMoviesCount(0);
     }

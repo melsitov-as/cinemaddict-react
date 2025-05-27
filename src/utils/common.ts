@@ -33,13 +33,17 @@ export const getRandomPositiveInteger = (a: number, b: number): number => {
 };
 
 // Длительность фильма
-export const getDuration = (data: number): string => {
-  if (data < 60) {
-    return `${data % 60}m`;
-  } else if (data === 60) {
-    return `${data / 60}h`;
+export const getDuration = (data: number | undefined): string => {
+  if (data) {
+    if (data < 60) {
+      return `${data % 60}m`;
+    } else if (data === 60) {
+      return `${data / 60}h`;
+    } else {
+      return `${Math.floor(data / 60)}h ${data % 60}m`;
+    }
   } else {
-    return `${Math.floor(data / 60)}h ${data % 60}m`;
+    return '0';
   }
 };
 
@@ -50,12 +54,13 @@ export const getDurationInHandM = (
   minutes: data % 60,
 });
 
-const getStringOrEmpty = (flag: boolean, value: string): string =>
+const getStringOrEmpty = (flag: boolean | undefined, value: string): string =>
   flag ? value : '';
 
-const getCardSelector = (flag: boolean) =>
+const getCardSelector = (flag: boolean | undefined) =>
   getStringOrEmpty(flag, CSS_SELECTOR_CARD_CONTROL_ACTIVE);
-const getDetailsSelector = (flag: boolean) =>
+
+const getDetailsSelector = (flag: boolean | undefined) =>
   getStringOrEmpty(flag, CSS_SELECTOR_DETAILS_CONTROL_ACTIVE);
 
 export const addStatus = (filmCardData: MovieType) => ({
@@ -64,10 +69,12 @@ export const addStatus = (filmCardData: MovieType) => ({
   isInFavoritesActive: getCardSelector(filmCardData.isInFavorites),
 });
 
-export const addPopupStatus = (filmCardData: MovieType): CardStatus => ({
-  isInWatchlistActive: getDetailsSelector(filmCardData.isInWatchlist),
-  isWatchedActive: getDetailsSelector(filmCardData.isWatched),
-  isInFavoritesActive: getDetailsSelector(filmCardData.isInFavorites),
+export const addPopupStatus = (
+  filmCardData: MovieType | undefined
+): CardStatus => ({
+  isInWatchlistActive: getDetailsSelector(filmCardData?.isInWatchlist),
+  isWatchedActive: getDetailsSelector(filmCardData?.isWatched),
+  isInFavoritesActive: getDetailsSelector(filmCardData?.isInFavorites),
 });
 
 export const isEscKey = (evt: React.KeyboardEvent) =>
@@ -99,8 +106,16 @@ export const sortByDate = (filmA: MovieType, filmB: MovieType): number =>
 //   );
 // };
 
-export const sortByRating = (a: MovieType, b: MovieType): number =>
-  b.rating - a.rating;
+export const sortByRating = (a: MovieType, b: MovieType): number => {
+  const ratingA = a.rating ?? 0;
+  const ratingB = b.rating ?? 0;
 
-export const sortByComments = (a: MovieType, b: MovieType): number =>
-  b.commentsCount - a.commentsCount;
+  return ratingB - ratingA;
+};
+
+export const sortByComments = (a: MovieType, b: MovieType): number => {
+  const commentsCountA = a.rating ?? 0;
+  const commentsCountB = b.rating ?? 0;
+
+  return commentsCountB - commentsCountA;
+};

@@ -1,11 +1,19 @@
-import React, { JSX, KeyboardEventHandler, useState } from 'react';
+import React, { JSX, KeyboardEventHandler, useEffect, useState } from 'react';
 import Comment from '../comment/comment';
 import { getDuration, addPopupStatus, CardStatus } from '../../utils/common';
 import he from 'he';
 import { MovieType } from '../film-card/film-card';
+import {
+  addComment,
+  toggleIsInFavorites,
+  toggleIsInWatchlist,
+  toggleIsWatched,
+} from '../../store/action';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../hooks';
 
 type PopupProps = {
-  movie: MovieType;
+  // movie: MovieType;
   onClose: () => void;
   onUpdateMovie: (updatedMovie: MovieType) => void;
 };
@@ -18,15 +26,19 @@ interface IEmojiStyles {
 }
 
 export default function Popup({
-  movie,
+  // movie: initialMovie,
   onClose,
   onUpdateMovie,
 }: PopupProps): JSX.Element {
+  const dispatch = useDispatch();
+
+  const movie = useAppSelector((state) => state.currentFilmCard);
   // const [movie, setMovie] = useState(initialMovie); // Добавляем состояние для movie
+  // const [status, setStatus] = useState(addPopupStatus(movie));
   const [newCommentText, setNewCommentText] = useState<string>('');
   const [newCommentEmoji, setNewCommentEmoji] = useState<string | null>(null); // Default emoji
-  const durationInHM: string = getDuration(movie.totalDuration);
-  const status: CardStatus = addPopupStatus(movie);
+  const durationInHM: string = getDuration(movie?.totalDuration);
+  const status = addPopupStatus(movie);
 
   const emojiStyles: IEmojiStyles = {
     smile: {
@@ -62,29 +74,32 @@ export default function Popup({
   const handleAddToWatchlist: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
+    // onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
+    dispatch(toggleIsInWatchlist({ id: movie?.id }));
   };
 
   const handleMarkAsWatched: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
+    // onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
+    dispatch(toggleIsWatched({ id: movie?.id }));
   };
 
   const handleMarkAsFavorite: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
+    // onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
+    dispatch(toggleIsInFavorites({ id: movie?.id }));
   };
 
   const handleDeleteComment = (commentId: string) => {
-    const updatedComments = movie.comments.filter(
+    const updatedComments = movie?.comments?.filter(
       (comment) => comment.id !== commentId
     );
     const updatedMovie = {
       ...movie,
       comments: updatedComments,
-      commentsCount: updatedComments.length,
+      commentsCount: updatedComments?.length,
     };
     // setMovie(updatedMovie);
     onUpdateMovie(updatedMovie);
@@ -95,7 +110,7 @@ export default function Popup({
 
     if (newCommentText.trim()) {
       const newComment: any = {
-        id: Date.now(),
+        id: String(Date.now()),
         author: 'Your Name', // Replace with actual author
         text: sanitizedCommentText,
         date: new Date().toLocaleDateString(),
@@ -108,7 +123,9 @@ export default function Popup({
         // commentsCount: updatedComments.length,
       };
       // setMovie(updatedMovie);
-      onUpdateMovie(updatedMovie);
+      // onUpdateMovie(updatedMovie);
+      console.log(newComment);
+      dispatch(addComment({ newComment: newComment }));
       setNewCommentText(''); // Clear comment input
       setNewCommentEmoji(null);
     }
@@ -151,24 +168,24 @@ export default function Popup({
             <div className='film-details__poster'>
               <img
                 className='film-details__poster-img'
-                src={`/images/posters/${movie.image}`}
+                src={`/images/posters/${movie?.image}`}
                 alt=''
               />
 
-              <p className='film-details__age'>{movie.ageRating}</p>
+              <p className='film-details__age'>{movie?.ageRating}</p>
             </div>
 
             <div className='film-details__info'>
               <div className='film-details__info-head'>
                 <div className='film-details__title-wrap'>
-                  <h3 className='film-details__title'>{movie.title}</h3>
+                  <h3 className='film-details__title'>{movie?.title}</h3>
                   <p className='film-details__title-original'>
-                    {movie.originalTitle}
+                    {movie?.originalTitle}
                   </p>
                 </div>
 
                 <div className='film-details__rating'>
-                  <p className='film-details__total-rating'>{movie.rating}</p>
+                  <p className='film-details__total-rating'>{movie?.rating}</p>
                 </div>
               </div>
 
@@ -176,22 +193,22 @@ export default function Popup({
                 <tbody>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>Director</td>
-                    <td className='film-details__cell'>{movie.director}</td>
+                    <td className='film-details__cell'>{movie?.director}</td>
                   </tr>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>Writers</td>
                     <td className='film-details__cell'>
-                      {movie.screenwriters}
+                      {movie?.screenwriters}
                     </td>
                   </tr>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>Actors</td>
-                    <td className='film-details__cell'>{movie.actors}</td>
+                    <td className='film-details__cell'>{movie?.actors}</td>
                   </tr>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>Release Date</td>
                     <td className='film-details__cell'>
-                      {movie.releaseDateDMY}
+                      {movie?.releaseDateDMY}
                     </td>
                   </tr>
                   <tr className='film-details__row'>
@@ -200,12 +217,12 @@ export default function Popup({
                   </tr>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>Country</td>
-                    <td className='film-details__cell'>{movie.country}</td>
+                    <td className='film-details__cell'>{movie?.country}</td>
                   </tr>
                   <tr className='film-details__row'>
-                    <td className='film-details__term'>{movie.genreTitle}</td>
+                    <td className='film-details__term'>{movie?.genreTitle}</td>
                     <td className='film-details__cell'>
-                      {movie.genre}
+                      {movie?.genre}
 
                       {/* <span className='film-details__genre'>Drama</span>
                       <span className='film-details__genre'>Film-Noir</span>
@@ -216,7 +233,7 @@ export default function Popup({
               </table>
 
               <p className='film-details__film-description'>
-                {movie.description}
+                {movie?.description}
               </p>
             </div>
           </div>
@@ -257,11 +274,11 @@ export default function Popup({
             <h3 className='film-details__comments-title'>
               Comments{' '}
               <span className='film-details__comments-count'>
-                {movie.commentsCount}
+                {movie?.commentsCount}
               </span>
             </h3>
             <ul className='film-details__comments-list'>
-              {movie.comments.map((comment) => (
+              {movie?.comments?.map((comment) => (
                 <Comment
                   key={comment.id}
                   comment={comment}
