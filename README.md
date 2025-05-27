@@ -2,7 +2,7 @@
 
 ## URL проекта
 
-[https://melsitov-as.github.io/cinemaddict-react](https://melsitov-as.github.io/cinemaddict-react)
+[https://melsitov-as.github.io/cinemaaddict-react](https://melsitov-as.github.io/cinemaaddict-react)
 
 ## Используемые технологии
 
