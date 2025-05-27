@@ -9,3 +9,4 @@
 - React
 - JavaScript
 - TypeScript
+- Redux
