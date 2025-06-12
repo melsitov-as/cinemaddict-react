@@ -331,19 +331,19 @@ describe('sortByComments', () => {
   it('returns a positive number when the first film has fewer comments than the second', () => {
     const filmA = { title: 'Film A', commentsCount: 5 };
     const filmB = { title: 'Film B', commentsCount: 10 };
-    expect(sortByComments(filmA, filmB)).toBeGreaterThan(0); // filmB has more comments, should return positive
+    expect(sortByComments(filmA, filmB)).toBeGreaterThan(0);
   });
 
   it('returns a negative number when the first film has more comments than the second', () => {
     const filmA = { title: 'Film A', commentsCount: 10 };
     const filmB = { title: 'Film B', commentsCount: 5 };
-    expect(sortByComments(filmA, filmB)).toBeLessThan(0); // filmA has more comments, should return negative
+    expect(sortByComments(filmA, filmB)).toBeLessThan(0);
   });
 
   it('returns 0 when both films have the same number of comments', () => {
     const filmA = { title: 'Film A', commentsCount: 7 };
     const filmB = { title: 'Film B', commentsCount: 7 };
-    expect(sortByComments(filmA, filmB)).toBe(0); // Same number of comments, should return 0
+    expect(sortByComments(filmA, filmB)).toBe(0);
   });
 
   it('correctly sorts an array of movies by commentsCount', () => {
@@ -355,20 +355,20 @@ describe('sortByComments', () => {
 
     const sortedFilms = films.sort(sortByComments);
 
-    expect(sortedFilms[0].title).toBe('Film B'); // Should be the most commented
+    expect(sortedFilms[0].title).toBe('Film B');
     expect(sortedFilms[1].title).toBe('Film C');
-    expect(sortedFilms[2].title).toBe('Film A'); // Should be the least commented
+    expect(sortedFilms[2].title).toBe('Film A');
   });
 
   it('handles undefined commentsCount by treating it as 0', () => {
     const filmA = { title: 'Film A', commentsCount: undefined };
     const filmB = { title: 'Film B', commentsCount: 10 };
-    expect(sortByComments(filmA, filmB)).toBeGreaterThan(0); // filmB has a commentsCount, should return positive
+    expect(sortByComments(filmA, filmB)).toBeGreaterThan(0);
   });
 
   it('treats films with undefined commentsCount as having 0 comments', () => {
     const filmA = { title: 'Film A', commentsCount: undefined };
     const filmB = { title: 'Film B', commentsCount: undefined };
-    expect(sortByComments(filmA, filmB)).toBe(0); // Same undefined commentsCount, should return 0
+    expect(sortByComments(filmA, filmB)).toBe(0);
   });
 });
