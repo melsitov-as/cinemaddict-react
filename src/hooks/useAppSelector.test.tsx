@@ -4,8 +4,7 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { configureStore, createReducer, createSlice } from '@reduxjs/toolkit';
 
-import { useAppSelector } from '../../hooks';
-import { MovieType } from '../film-card/film-card';
+import { useAppSelector } from '.';
 
 const TestComponent: React.FC = () => {
   const moviesCards = useAppSelector((state) => state.filmCards);
