@@ -17,7 +17,6 @@ export type MovieType = {
   commentsCount?: number;
   commentsTitle?: string;
   country?: string;
-  // dateWatched?: string | number | Dayjs | Date | null | undefined;
   dateWatched?: string;
   description?: string;
   director?: string;
@@ -34,7 +33,6 @@ export type MovieType = {
   number?: number;
   originalTitle?: string;
   rating?: number | null;
-  // releaseDate?: Dayjs;
   releaseDate?: string;
   releaseDateDMY?: string;
   screenwriters?: string[];
@@ -47,14 +45,12 @@ export type MovieType = {
 type FilmCardProps = {
   movie: MovieType;
   onClick: MouseEventHandler<HTMLImageElement>;
-  // onUpdateMovie: (updatedMovie: MovieType) => void;
 };
 
 export default function FilmCard({
   movie,
   onClick,
-}: // onUpdateMovie,
-FilmCardProps): JSX.Element {
+}: FilmCardProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const durationInHM: string = getDuration(movie.totalDuration);
@@ -84,6 +80,7 @@ FilmCardProps): JSX.Element {
         style={{ color: 'white', textDecoration: 'none' }}
         to='#'
         className='film-card__link'
+        aria-label={`View details for ${movie.title}`}
       >
         <h3 className='film-card__title'>{movie.title}</h3>
         <p className='film-card__rating'>{movie.rating}</p>
@@ -93,9 +90,8 @@ FilmCardProps): JSX.Element {
           <span className='film-card__genre'>{movie.genre}</span>
         </p>
         <img
-          // src={`/cinemaaddict-react/images/posters/${movie.image}`}
           src={`/cinemaaddict-react/images/posters/${movie.image}`}
-          alt=''
+          alt={`Poster of ${movie.title}`}
           className='film-card__poster'
           onClick={onClick}
           style={{ cursor: 'pointer' }}

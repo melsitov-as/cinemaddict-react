@@ -27,7 +27,7 @@ export default function Comment({
   };
 
   return (
-    <li className='film-details__comment'>
+    <li className='film-details__comment' data-testid='comment'>
       <span className='film-details__comment-emoji'>
         <img
           src={`/cinemaaddict-react/images/emoji/${comment.emoji}.png`}
