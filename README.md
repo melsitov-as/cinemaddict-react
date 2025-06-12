@@ -10,3 +10,5 @@
 - JavaScript
 - TypeScript
 - Redux
+- Jest
+- React testing library
