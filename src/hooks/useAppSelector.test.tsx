@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Provider } from 'react-redux';
+import * as reactRedux from 'react-redux';
 import { configureStore, createReducer, createSlice } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '.';
@@ -48,9 +48,9 @@ describe('TestComponent with Redux selector', () => {
 
   it('should correctly select moviesCards from state', () => {
     render(
-      <Provider store={store}>
+      <reactRedux.Provider store={store}>
         <TestComponent />
-      </Provider>
+      </reactRedux.Provider>
     );
 
     expect(screen.getByText('Фильм 1')).toBeInTheDocument();
@@ -70,9 +70,9 @@ describe('TestComponent with Redux selector', () => {
     });
 
     render(
-      <Provider store={emptyStore}>
+      <reactRedux.Provider store={emptyStore}>
         <TestComponent />
-      </Provider>
+      </reactRedux.Provider>
     );
 
     expect(screen.queryAllByTestId('movie-card')).toHaveLength(0);
