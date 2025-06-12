@@ -13,7 +13,7 @@ const CSS_SELECTOR_DETAILS_CONTROL_ACTIVE: string =
   'film-details__control-button--active';
 
 // Генерирует случайное дробное число
-export const getRandomPositiveFloat = (
+export const getRandomPositiveFloatAsString = (
   a: number,
   b: number,
   digits: number = 1
@@ -54,8 +54,10 @@ export const getDurationInHandM = (
   minutes: data % 60,
 });
 
-const getStringOrEmpty = (flag: boolean | undefined, value: string): string =>
-  flag ? value : '';
+export const getStringOrEmpty = (
+  flag: boolean | undefined,
+  value: string
+): string => (flag ? value : '');
 
 const getCardSelector = (flag: boolean | undefined) =>
   getStringOrEmpty(flag, CSS_SELECTOR_CARD_CONTROL_ACTIVE);
@@ -83,28 +85,8 @@ export const isEscKey = (evt: React.KeyboardEvent) =>
 export const isCtrlCommandEnterKey = (evt: React.KeyboardEvent): boolean =>
   (evt.ctrlKey && evt.key === 'Enter') || (evt.metaKey && evt.key === 'Enter');
 
-// export const updateItem = (items, update) => {
-//   const index = items.findIndex((item) => item.id === update.id);
-
-//   if (index === -1) {
-//     return items;
-//   }
-
-//   return [
-//     ...items.slice(0, index),
-//     update,
-//     ...items.slice(index + 1),
-//   ];
-// };
-
 export const sortByDate = (filmA: MovieType, filmB: MovieType): number =>
   dayjs(filmB.releaseDate).diff(dayjs(filmA.releaseDate));
-
-// export const callbackForEachLimited = (items, count, callback) => {
-//   Array.from({ length: Math.min(items.length, count) }, (_, ix) =>
-//     callback(items[ix])
-//   );
-// };
 
 export const sortByRating = (a: MovieType, b: MovieType): number => {
   const ratingA = a.rating ?? 0;
@@ -114,8 +96,8 @@ export const sortByRating = (a: MovieType, b: MovieType): number => {
 };
 
 export const sortByComments = (a: MovieType, b: MovieType): number => {
-  const commentsCountA = a.rating ?? 0;
-  const commentsCountB = b.rating ?? 0;
+  const commentsCountA = a.commentsCount ?? 0;
+  const commentsCountB = b.commentsCount ?? 0;
 
   return commentsCountB - commentsCountA;
 };

@@ -33,7 +33,7 @@ export type MovieType = {
   isWatched?: boolean;
   number?: number;
   originalTitle?: string;
-  rating?: number;
+  rating?: number | null;
   // releaseDate?: Dayjs;
   releaseDate?: string;
   releaseDateDMY?: string;

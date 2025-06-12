@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import {
-  getRandomPositiveFloat,
+  getRandomPositiveFloatAsString,
   getRandomPositiveInteger,
 } from '../utils/common';
 import { CommentType } from '../components/comment/comment.js';
@@ -85,7 +85,7 @@ const COUNTRIES_LIST: string[] = makeArrayWithIndex(5, 'Country');
 export const getRandomItem = (data: string[]): string =>
   data[getRandomPositiveInteger(0, data.length - 1)];
 
-const getRating = (): string => getRandomPositiveFloat(1, 10, 1);
+const getRating = (): string => getRandomPositiveFloatAsString(1, 10, 1);
 
 // Класс Генерирует случайный массив
 
