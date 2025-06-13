@@ -33,10 +33,6 @@ export default function StatsFilters({
       case 'year':
         handleStatsFilterClick('Year');
         break;
-      default:
-        // Обработка неожиданного значения (можно выбросить ошибку или сделать что-то по умолчанию)
-        console.warn(`Unexpected filter value: ${value}`);
-        break;
     }
   };
 
