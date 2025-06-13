@@ -63,7 +63,7 @@ export default function Header(): JSX.Element {
           <p className='profile__rating'>{profileRating}</p>
           <img
             className='profile__avatar'
-            src='images/bitmap@2x.png'
+            src='/cinemaaddict-react/images/bitmap@2x.png'
             alt='Avatar'
             width='35'
             height='35'
