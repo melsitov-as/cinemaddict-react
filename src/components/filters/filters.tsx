@@ -99,6 +99,7 @@ export default function Filters(): JSX.Element {
           className={`main-navigation__additional ${
             statsActive ? 'main-navigation__additional--active' : ''
           }`}
+          onClick={() => handleFilterClick('')}
         >
           {' '}
           Stats
