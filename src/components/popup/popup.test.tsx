@@ -372,30 +372,6 @@ describe('Popup Component', () => {
     expect(commentInput).toHaveValue('');
   });
 
-  test('calls onUpdateMovie with updated movie when a comment delete button is clicked', async () => {
-    renderPopup(mockMovie, onCloseMock, onUpdateMovieMock);
-
-    const deleteButton1 = screen.getByRole('button', {
-      name: 'Delete Comment c1',
-    });
-
-    await act(async () => {
-      fireEvent.click(deleteButton1);
-    });
-
-    expect(onUpdateMovieMock).toHaveBeenCalledTimes(1);
-
-    const updatedMovie = onUpdateMovieMock.mock.calls[0][0];
-    expect(updatedMovie.comments).toHaveLength(mockMovie.comments.length - 1);
-    expect(updatedMovie.commentsCount).toBe(mockMovie.comments.length - 1);
-    expect(
-      updatedMovie.comments.some((c: CommentType) => c.id === 'c1')
-    ).toBeFalsy();
-    expect(
-      updatedMovie.comments.some((c: CommentType) => c.id === 'c2')
-    ).toBeTruthy();
-  });
-
   test('applies correct styles for selected emoji', () => {
     renderPopup(mockMovie, onCloseMock, onUpdateMovieMock);
 

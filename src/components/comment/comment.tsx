@@ -46,6 +46,7 @@ export default function Comment({
             className='film-details__comment-delete'
             onClick={handleDeleteClick}
             type='button'
+            name='Delete'
           >
             Delete
           </button>
