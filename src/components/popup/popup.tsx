@@ -308,7 +308,7 @@ export default function Popup({
                   htmlFor='emoji-smile'
                 >
                   <img
-                    src='./cinemaaddict-react/images/emoji/smile.png'
+                    src='/cinemaaddict-react/images/emoji/smile.png'
                     width='30'
                     height='30'
                     alt='emoji-smile'
@@ -330,7 +330,7 @@ export default function Popup({
                   htmlFor='emoji-sleeping'
                 >
                   <img
-                    src='./cinemaaddict-react/images/emoji/sleeping.png'
+                    src='/cinemaaddict-react/images/emoji/sleeping.png'
                     width='30'
                     height='30'
                     alt='emoji-sleeping'
@@ -352,7 +352,7 @@ export default function Popup({
                   htmlFor='emoji-puke'
                 >
                   <img
-                    src='./cinemaaddict-react/images/emoji/puke.png'
+                    src='/cinemaaddict-react/images/emoji/puke.png'
                     width='30'
                     height='30'
                     alt='emoji-puke'
@@ -374,7 +374,7 @@ export default function Popup({
                   htmlFor='emoji-angry'
                 >
                   <img
-                    src='./cinemaaddict-react/images/emoji/angry.png'
+                    src='/cinemaaddict-react/images/emoji/angry.png'
                     width='30'
                     height='30'
                     alt='emoji-angry'
