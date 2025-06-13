@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import { MovieType } from '../film-card/film-card';
 import { useAppSelector } from '../../hooks';
 
-// type HeaderProps = {
-//   movies?: MovieType[] | null | undefined;
-// };
-
 enum ProfileRating {
   EMPTY = `You haven't watched any movies yet.`,
   NOVICE = 'Novice',
@@ -14,16 +10,12 @@ enum ProfileRating {
   MOVIE_BUFF = 'Movie buff',
 }
 
-// export default function Header({ movies }: HeaderProps): JSX.Element {
-// const [watchedMoviesCount, setWatchedMoviesCount] = useState<number>(
-//   movies ? movies.filter((movie) => movie.isWatched).length : 0
-// );
 export default function Header(): JSX.Element {
   const movies = useAppSelector((state) => state.filmCards);
 
   useEffect(() => {
     if (movies && Array.isArray(movies)) {
-      const watched = movies.filter((movie) => movie.isWatched); // Предполагаем, что у movie есть свойство isWatched
+      const watched = movies.filter((movie) => movie.isWatched);
       setWatchedMoviesCount(watched);
     } else {
       setWatchedMoviesCount(movies);
@@ -47,7 +39,7 @@ export default function Header(): JSX.Element {
       return ProfileRating.FAN;
     } else if (moviesAmount >= 21) {
       return ProfileRating.MOVIE_BUFF;
-    } // Можно добавить default return на случай непредвиденных значений
+    }
     return ProfileRating.EMPTY;
   };
 

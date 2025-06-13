@@ -2,10 +2,21 @@ import { JSX } from 'react';
 import { MovieType } from '../film-card/film-card';
 
 type FooterProps = {
-  movies?: MovieType[] | null | undefined;
+  movies?: MovieType[] | null;
 };
 
 export default function Footer({ movies }: FooterProps): JSX.Element {
+  const getMoviesCount = (
+    moviesProp: MovieType[] | null | undefined
+  ): number => {
+    return moviesProp?.length ?? 0;
+  };
+
+  // Вычисляем длину, используя новую функцию
+  const count = getMoviesCount(movies);
+  const stringWithCount =
+    count + ` ${count === 1 ? 'movie' : 'movies'} ` + 'inside';
+
   return (
     <div>
       <footer className='footer'>
@@ -13,10 +24,7 @@ export default function Footer({ movies }: FooterProps): JSX.Element {
           Cinemaddict
         </section>
         <section className='footer__statistics'>
-          <p>
-            {movies?.length} {`${movies?.length === 1 ? 'movie' : 'movies'}`}{' '}
-            inside
-          </p>
+          <p>{stringWithCount}</p>
         </section>
       </footer>
     </div>
