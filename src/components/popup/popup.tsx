@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks';
 
 type PopupProps = {
-  // movie: MovieType;
   onClose: () => void;
   onUpdateMovie: (updatedMovie: MovieType) => void;
 };
@@ -26,15 +25,12 @@ interface IEmojiStyles {
 }
 
 export default function Popup({
-  // movie: initialMovie,
   onClose,
   onUpdateMovie,
 }: PopupProps): JSX.Element {
   const dispatch = useDispatch();
 
   const movie = useAppSelector((state) => state.currentFilmCard);
-  // const [movie, setMovie] = useState(initialMovie); // Добавляем состояние для movie
-  // const [status, setStatus] = useState(addPopupStatus(movie));
   const [newCommentText, setNewCommentText] = useState<string>('');
   const [newCommentEmoji, setNewCommentEmoji] = useState<string | null>(null); // Default emoji
   const durationInHM: string = getDuration(movie?.totalDuration);
@@ -45,50 +41,43 @@ export default function Popup({
       position: 'absolute',
       top: 'calc(50% - 25px)',
       left: 'calc(50% - 25px)',
-      // Дополнительные стили для smile
     },
     sleeping: {
       position: 'absolute',
-      top: 'calc(50% - 25px)', // Изменяем top
-      left: 'calc(50% - 23px)', // Изменяем left
-      width: '50px', // Изменяем width
-      height: '50px', // Изменяем height
-      // Дополнительные стили для sleeping
+      top: 'calc(50% - 25px)',
+      left: 'calc(50% - 23px)',
+      width: '50px',
+      height: '50px',
     },
     puke: {
       position: 'absolute',
-      top: 'calc(50% - 25px)', // Изменяем top
-      left: 'calc(50% - 27px)', // Изменяем left
-      width: '52px', // Изменяем width
-      height: '52px', // Изменяем height
-      // Дополнительные стили для puke
+      top: 'calc(50% - 25px)',
+      left: 'calc(50% - 27px)',
+      width: '52px',
+      height: '52px',
     },
     angry: {
       position: 'absolute',
       top: 'calc(50% - 25px)',
       left: 'calc(50% - 25px)',
-      // Дополнительные стили для angry
     },
   };
 
   const handleAddToWatchlist: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    // onUpdateMovie({ ...movie, isInWatchlist: !movie.isInWatchlist });
     dispatch(toggleIsInWatchlist({ id: movie?.id }));
   };
 
   const handleMarkAsWatched: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    // onUpdateMovie({ ...movie, isWatched: !movie.isWatched });
     dispatch(toggleIsWatched({ id: movie?.id }));
   };
 
   const handleMarkAsFavorite: React.MouseEventHandler<
     HTMLButtonElement
   > = () => {
-    // onUpdateMovie({ ...movie, isInFavorites: !movie.isInFavorites });
     dispatch(toggleIsInFavorites({ id: movie?.id }));
   };
 
@@ -101,17 +90,16 @@ export default function Popup({
       comments: updatedComments,
       commentsCount: updatedComments?.length,
     };
-    // setMovie(updatedMovie);
     onUpdateMovie(updatedMovie);
   };
 
   const handleAddComment = () => {
-    const sanitizedCommentText = he.encode(newCommentText); // Обработка текста
+    const sanitizedCommentText = he.encode(newCommentText);
 
     if (newCommentText.trim()) {
       const newComment: any = {
         id: String(Date.now()),
-        author: 'Your Name', // Replace with actual author
+        author: 'Your Name',
         text: sanitizedCommentText,
         date: new Date().toLocaleDateString(),
         emoji: newCommentEmoji,
@@ -119,21 +107,16 @@ export default function Popup({
 
       const updatedMovie = {
         ...movie,
-        // comments: updatedComments,
-        // commentsCount: updatedComments.length,
       };
-      // setMovie(updatedMovie);
-      // onUpdateMovie(updatedMovie);
-      console.log(newComment);
       dispatch(addComment({ newComment: newComment }));
-      setNewCommentText(''); // Clear comment input
+      setNewCommentText('');
       setNewCommentEmoji(null);
     }
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault(); // Предотвращаем стандартное поведение Enter (перевод строки)
+      event.preventDefault();
       handleAddComment();
     }
   };
@@ -221,13 +204,7 @@ export default function Popup({
                   </tr>
                   <tr className='film-details__row'>
                     <td className='film-details__term'>{movie?.genreTitle}</td>
-                    <td className='film-details__cell'>
-                      {movie?.genre}
-
-                      {/* <span className='film-details__genre'>Drama</span>
-                      <span className='film-details__genre'>Film-Noir</span>
-                      <span className='film-details__genre'>Mystery</span> */}
-                    </td>
+                    <td className='film-details__cell'>{movie?.genre}</td>
                   </tr>
                 </tbody>
               </table>
@@ -294,9 +271,9 @@ export default function Popup({
                   position: 'relative',
                 }}
               >
-                {newCommentEmoji && ( // Условный рендеринг изображения
+                {newCommentEmoji && (
                   <img
-                    src={`/images/emoji/${newCommentEmoji}.png`}
+                    src={`/cinemaaddict-react/images/emoji/${newCommentEmoji}.png`}
                     width='50px'
                     height='50px'
                     alt='emoji'
@@ -304,14 +281,6 @@ export default function Popup({
                   />
                 )}
               </div>
-
-              {/* <label className='film-details__comment-label'>
-                <textarea
-                  className='film-details__comment-input'
-                  placeholder='Select reaction below and write comment here'
-                  name='comment'
-                ></textarea>
-              </label> */}
 
               <label className='film-details__comment-label'>
                 <textarea
@@ -327,7 +296,7 @@ export default function Popup({
               <div className='film-details__emoji-list'>
                 <input
                   className='film-details__emoji-item visually-hidden'
-                  name='comment-emoji'
+                  name='smile'
                   type='radio'
                   id='emoji-smile'
                   value='smile'
@@ -339,16 +308,17 @@ export default function Popup({
                   htmlFor='emoji-smile'
                 >
                   <img
-                    src='./images/emoji/smile.png'
+                    src='./cinemaaddict-react/images/emoji/smile.png'
                     width='30'
                     height='30'
-                    alt='emoji'
+                    alt='emoji-smile'
                   />
+                  <span className='visually-hidden'>smile</span>
                 </label>
 
                 <input
                   className='film-details__emoji-item visually-hidden'
-                  name='comment-emoji'
+                  name='sleeping'
                   type='radio'
                   id='emoji-sleeping'
                   value='sleeping'
@@ -360,16 +330,17 @@ export default function Popup({
                   htmlFor='emoji-sleeping'
                 >
                   <img
-                    src='./images/emoji/sleeping.png'
+                    src='./cinemaaddict-react/images/emoji/sleeping.png'
                     width='30'
                     height='30'
-                    alt='emoji'
+                    alt='emoji-sleeping'
                   />
+                  <span className='visually-hidden'>sleeping</span>
                 </label>
 
                 <input
                   className='film-details__emoji-item visually-hidden'
-                  name='comment-emoji'
+                  name='puke'
                   type='radio'
                   id='emoji-puke'
                   value='puke'
@@ -381,16 +352,17 @@ export default function Popup({
                   htmlFor='emoji-puke'
                 >
                   <img
-                    src='./images/emoji/puke.png'
+                    src='./cinemaaddict-react/images/emoji/puke.png'
                     width='30'
                     height='30'
-                    alt='emoji'
+                    alt='emoji-puke'
                   />
+                  <span className='visually-hidden'>puke</span>
                 </label>
 
                 <input
                   className='film-details__emoji-item visually-hidden'
-                  name='comment-emoji'
+                  name='angry'
                   type='radio'
                   id='emoji-angry'
                   value='angry'
@@ -402,11 +374,12 @@ export default function Popup({
                   htmlFor='emoji-angry'
                 >
                   <img
-                    src='./images/emoji/angry.png'
+                    src='./cinemaaddict-react/images/emoji/angry.png'
                     width='30'
                     height='30'
-                    alt='emoji'
+                    alt='emoji-angry'
                   />
+                  <span className='visually-hidden'>angry</span>
                 </label>
               </div>
             </div>
