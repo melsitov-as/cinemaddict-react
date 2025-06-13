@@ -8,12 +8,10 @@ import { MOVIES_CARDS_COUNT } from './utils/const';
 import { MovieType } from './components/film-card/film-card';
 import { store } from './store';
 
-// const movies =
-//   MOVIES_CARDS_COUNT > 0
-//     ? Array.from({ length: MOVIES_CARDS_COUNT }, getFilmCardMockData)
-//     : null;
-
-const movies = null;
+const movies =
+  MOVIES_CARDS_COUNT > 0
+    ? Array.from({ length: MOVIES_CARDS_COUNT }, getFilmCardMockData)
+    : null;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
